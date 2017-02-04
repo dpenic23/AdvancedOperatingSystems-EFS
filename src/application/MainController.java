@@ -33,15 +33,15 @@ public class MainController {
 	}
 
 	public void viewFileAESInput(ActionEvent event) {
-		viewFile(textFieldAESInput);
+		viewFile(textFieldAESInput.getText().trim());
 	}
 
 	public void viewFileAESOutput(ActionEvent event) {
-		viewFile(textFieldAESOutput);
+		viewFile(textFieldAESOutput.getText().trim());
 	}
 
 	public void viewFileAESKey(ActionEvent event) {
-		viewFile(textFieldAESKey);
+		viewFile(textFieldAESKey.getText().trim());
 	}
 
 	/**
@@ -67,11 +67,10 @@ public class MainController {
 	 * Takes the absolute path from the specified text field and tries to open
 	 * it with the text editor depending on the operating system.
 	 * 
-	 * @param textField
-	 *            Text field with the absolute path.
+	 * @param filePath
+	 *            Absolute path of the file.
 	 */
-	private void viewFile(TextField textField) {
-		String filePath = textField.getText().trim();
+	private void viewFile(String filePath) {
 		File file = new File(filePath);
 
 		boolean error = false;
