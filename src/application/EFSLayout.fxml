@@ -59,7 +59,7 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="56.0" prefWidth="590.0" spacing="10.0">
                      <children>
-                        <Button mnemonicParsing="false" text="Generate key" />
+                        <Button mnemonicParsing="false" onAction="#generateSymmetricKey" text="Generate key" />
                         <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Encrypt" />
                         <Button layoutX="72.0" layoutY="10.0" mnemonicParsing="false" text="Decrypt" />
                      </children>
