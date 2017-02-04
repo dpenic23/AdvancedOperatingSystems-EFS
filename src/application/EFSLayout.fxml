@@ -50,9 +50,9 @@
                         </VBox>
                         <VBox alignment="CENTER" layoutX="210.0" layoutY="10.0" prefHeight="100.0" prefWidth="68.0" spacing="8.0">
                            <children>
-                              <Button mnemonicParsing="false" text="View" />
-                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="View" />
-                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" text="View" />
+                              <Button mnemonicParsing="false" onAction="#viewFileAESInput" text="View" />
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#viewFileAESOutput" text="View" />
+                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#viewFileAESKey" text="View" />
                            </children>
                         </VBox>
                      </children>
