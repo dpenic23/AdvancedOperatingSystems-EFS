@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.collections.FXCollections?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
   <tabs>
     <Tab text="AES">
          <content>
@@ -36,16 +36,16 @@
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="100.0" prefWidth="315.0" spacing="8.0">
                            <children>
-                              <TextField />
-                              <TextField />
-                              <TextField layoutX="10.0" layoutY="35.0" />
+                              <TextField fx:id="textFieldAESInput" />
+                              <TextField fx:id="textFieldAESOutput" />
+                              <TextField fx:id="textFieldAESKey" layoutX="10.0" layoutY="35.0" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" layoutX="110.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" spacing="8.0">
                            <children>
-                              <Button mnemonicParsing="false" text="Choose" />
-                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Choose" />
-                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" text="Choose" />
+                              <Button mnemonicParsing="false" onAction="#chooseFileAESInput" text="Choose" />
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#chooseFileAESOutput" text="Choose" />
+                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#chooseFileAESKey" text="Choose" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" layoutX="210.0" layoutY="10.0" prefHeight="100.0" prefWidth="68.0" spacing="8.0">

@@ -1,4 +1,4 @@
-package hr.fer.nos.efs.application;
+package application;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 
 public class Main extends Application {
 
-	private static final String LAYOUT_LOCATION = "/hr/fer/nos/efs/layout/EFSLayout.fxml";
+	private static final String LAYOUT_LOCATION = "/application/EFSLayout.fxml";
 	private static final String APPLICATION_TITLE = "Encryption File System";
 	private static final boolean IS_RESIZABLE = false;
 
