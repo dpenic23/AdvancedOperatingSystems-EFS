@@ -1,0 +1,7 @@
+Opis predmeta: 
+Analiza određenosti sustava zadataka u računalnim sustavima. Komunikacija između procesa u raspodijeljenim sustavima. Razmjena poruka, pozivi udaljenih procedura, dijeljeni raspodijeljeni spremnički prostor. Globalni logički sat umreženog sustava. Međusobno isključivanje i sinkronizacija u raspodijeljenim sustavima. Mrežni datotečni sustavi. Potpuni zastoj i načini njegova izbjegavanja. Sigurnost umreženih sustava: načini ugrožavanja sigurnosti i mogućnosti uvećanja stupnja sigurnosti. Osnove kriptografije. Kriptosustavi s tajnim i javnim ključevima. Sigurnosni protokoli.
+
+Literatura: 
+G. Couloris, J. Dollimore, T. Kindberg: Distributed Systems, Addison-Wesley, 1994.
+P. K. Sinha: Distributed Operating Systems, IEEE Computer Society Press, 1997.
+W. Kou: Networking Security and Standards, Kluwer, 1997.
