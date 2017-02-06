@@ -9,6 +9,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import application.crypto.CryptoProperties;
+
 public class FileManager {
 
 	private static final String BEGIN_CRYPTO_DATA = "---BEGIN OS2 CRYPTO DATA---";
@@ -32,8 +34,8 @@ public class FileManager {
 		}
 	}
 
-	public List<Pair> readPropertiesFromFile(String filePath) throws IOException {
-		List<Pair> properties = new ArrayList<>();
+	public CryptoProperties readPropertiesFromFile(String filePath) throws IOException {
+		CryptoProperties properties = new CryptoProperties();
 
 		List<String> lines = Files.readAllLines(Paths.get(filePath));
 		int lineIndex = 0;
@@ -53,17 +55,17 @@ public class FileManager {
 			String key = lines.get(lineIndex).trim();
 			key = key.substring(0, key.length() - 1);
 
-			Pair pair = new Pair(key);
+			List<String> value = new ArrayList<>();
 
 			lineIndex++;
 
 			// Read the values, it could be in more lines
 			while (!lines.get(lineIndex).trim().isEmpty()) {
-				pair.addValue(lines.get(lineIndex).trim());
+				value.add(lines.get(lineIndex).trim());
 				lineIndex++;
 			}
 
-			properties.add(pair);
+			properties.addProperty(key, value);
 
 			lineIndex++;
 
@@ -72,18 +74,18 @@ public class FileManager {
 		return properties;
 	}
 
-	public void writePropertiesToFile(List<Pair> properties, String filePath) throws IOException {
+	public void writePropertiesToFile(CryptoProperties properties, String filePath) throws IOException {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append(BEGIN_CRYPTO_DATA + "\n");
 
-		for (Pair pair : properties) {
+		for (String key : properties.keySet()) {
 			// Key
-			sb.append(pair.getKey());
+			sb.append(key);
 			sb.append(":\n");
 
 			// Values
-			for (String value : pair.getValues()) {
+			for (String value : properties.value(key)) {
 				sb.append("    ");
 				sb.append(value);
 				sb.append("\n");

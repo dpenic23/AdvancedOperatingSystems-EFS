@@ -3,6 +3,7 @@ package application;
 import java.io.File;
 import java.io.IOException;
 
+import application.crypto.CryptoException;
 import application.crypto.CryptoManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -70,8 +71,11 @@ public class MainController {
 
 		try {
 			cryptoManager.encryptFileSymmetric(inputFilePath, outputFilePath, keyFilePath);
+			showAlert(Alert.AlertType.INFORMATION, "File successfully encrypted!");
 		} catch (IOException e) {
 			showAlert(Alert.AlertType.ERROR, "IO error occured!");
+		} catch (CryptoException e) {
+			showAlert(Alert.AlertType.ERROR, "Error occured during the file encryption!");
 		}
 	}
 
@@ -82,8 +86,11 @@ public class MainController {
 
 		try {
 			cryptoManager.decryptFileSymmetric(inputFilePath, outputFilePath, keyFilePath);
+			showAlert(Alert.AlertType.INFORMATION, "File successfully decrypted!");
 		} catch (IOException e) {
 			showAlert(Alert.AlertType.ERROR, "IO error occured!");
+		} catch (CryptoException e) {
+			showAlert(Alert.AlertType.ERROR, "Error occured during the file encryption!");
 		}
 	}
 

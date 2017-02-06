@@ -2,11 +2,10 @@ package application.crypto;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
+import java.security.Key;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.Base64;
-import java.util.List;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -20,7 +19,6 @@ import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 
 import application.file.FileManager;
-import application.file.Pair;
 
 public class CryptoManager {
 
@@ -48,36 +46,43 @@ public class CryptoManager {
 	public void generateSymmetricKey(String keyFilePath) throws IOException {
 		String key = Hex.encodeHexString(symmetricKeyGenerator.generateKey().getEncoded());
 
-		List<Pair> properties = new ArrayList<>();
+		CryptoProperties properties = new CryptoProperties();
 
-		properties.add(new Pair(Properties.DESCRIPTION, "Secret Key"));
-		properties.add(new Pair(Properties.METHOD, SYMMETRIC_ALGORITHM));
-		properties.add(new Pair(Properties.SECRET_KEY, key));
+		properties.addProperty(CryptoProperties.DESCRIPTION, "Secret Key");
+		properties.addProperty(CryptoProperties.METHOD, SYMMETRIC_ALGORITHM);
+		properties.addProperty(CryptoProperties.SECRET_KEY, key);
 
 		fileManager.writePropertiesToFile(properties, keyFilePath);
 	}
 
 	public void encryptFileSymmetric(String inputFilePath, String outputFilePath, String keyFilePath)
-			throws IOException {
+			throws IOException, CryptoException {
 		String inputFileContent = fileManager.readFile(inputFilePath);
-		String key = "";
 
-		List<Pair> keyProperties = fileManager.readPropertiesFromFile(keyFilePath);
-		for (Pair pair : keyProperties) {
-			if (pair.getKey().equals(Properties.SECRET_KEY)) {
-				key = pair.getValues().get(0);
-				break;
-			}
-		}
+		CryptoProperties keyProperties = fileManager.readPropertiesFromFile(keyFilePath);
+		String key = keyProperties.valueAssembled(CryptoProperties.SECRET_KEY);
 
-		byte[] decoded = {};
+		byte[] decodedKey = {};
 		try {
-			decoded = Hex.decodeHex(key.toCharArray());
+			decodedKey = Hex.decodeHex(key.toCharArray());
 		} catch (DecoderException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new CryptoException();
 		}
-		SecretKey secretKey = new SecretKeySpec(decoded, 0, decoded.length, "AES");
+		SecretKey secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, SYMMETRIC_ALGORITHM);
+		
+		byte[] encrypted = crypt(SYMMETRIC_ALGORITHM, secretKey, Cipher.ENCRYPT_MODE, inputFileContent.getBytes());
+		String encryptedText = Base64.getEncoder().encodeToString(encrypted);
+		
+		CryptoProperties properties = new CryptoProperties();
+		
+		properties.addProperty(CryptoProperties.DESCRIPTION, "Crypted file");
+		properties.addProperty(CryptoProperties.METHOD, SYMMETRIC_ALGORITHM);
+		properties.addProperty(CryptoProperties.FILE_NAME, inputFilePath);
+		properties.addProperty(CryptoProperties.DATA, encryptedText);
+		
+		fileManager.writePropertiesToFile(properties, outputFilePath);
+		
+		/*
 		Cipher cipher;
 		try {
 			cipher = Cipher.getInstance(SYMMETRIC_ALGORITHM);
@@ -95,15 +100,30 @@ public class CryptoManager {
 			System.out.println(new String(res));
 		} catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException
 				| BadPaddingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		*/
 
 	}
 
 	public void decryptFileSymmetric(String inputFilePath, String outputFilePath, String keyFilePath)
-			throws IOException {
+			throws IOException, CryptoException {
 
 	}
 
+	private static byte[] crypt(String algorithm, Key key, int cryptMode, byte[] input) throws CryptoException {
+		byte[] crypted = {};
+
+		try {
+			Cipher cipher = Cipher.getInstance(algorithm);
+			cipher.init(cryptMode, key);
+			crypted = cipher.doFinal(input);
+		} catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException
+				| BadPaddingException e) {
+			throw new CryptoException();
+		}
+
+		return crypted;
+	}
+	
 }
