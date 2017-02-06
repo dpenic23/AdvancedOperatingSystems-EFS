@@ -17,6 +17,10 @@ public class FileManager {
 	public FileManager() {
 	}
 
+	public String readFile(String filePath) throws IOException {
+		return new String(Files.readAllBytes(Paths.get(filePath)));
+	}
+
 	public List<Pair> readPropertiesFromFile(String filePath) throws IOException {
 		List<Pair> properties = new ArrayList<>();
 
