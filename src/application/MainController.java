@@ -2,14 +2,8 @@ package application;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.codec.binary.Hex;
 
 import application.crypto.CryptoManager;
-import application.file.FileManager;
-import application.file.Pair;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -17,6 +11,9 @@ import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 
 public class MainController {
+
+	private static final String DEFAULT_DIRECTORY = "./data";
+	private static final String DEFAULT_EDITOR = "gedit";
 
 	@FXML
 	private TextField textFieldAESInput;
@@ -28,7 +25,6 @@ public class MainController {
 	private TextField textFieldAESKey;
 
 	private CryptoManager cryptoManager = new CryptoManager();
-	private FileManager fileManager = new FileManager();
 
 	public void chooseFileAESInput(ActionEvent event) {
 		chooseFile(textFieldAESInput);
@@ -55,17 +51,12 @@ public class MainController {
 	}
 
 	public void generateSymmetricKey(ActionEvent event) {
-		String key = Hex.encodeHexString(cryptoManager.generateSymmetricKey().getEncoded());
-		String filePath = textFieldAESKey.getText().trim();
 
-		List<Pair> properties = new ArrayList<>();
-
-		properties.add(new Pair("Description", "Secret Key"));
-		properties.add(new Pair("Method", "AES"));
-		properties.add(new Pair("Secret Key", key));
+		String keyFilePath = textFieldAESKey.getText().trim();
 
 		try {
-			fileManager.writePropertiesToFile(properties, filePath);
+			cryptoManager.generateSymmetricKey(keyFilePath);
+			showAlert(Alert.AlertType.INFORMATION, "Key successfully generated!");
 		} catch (IOException e) {
 			showAlert(Alert.AlertType.ERROR, "IO error occured!");
 		}
@@ -74,15 +65,26 @@ public class MainController {
 
 	public void encryptFileAES(ActionEvent event) {
 		String inputFilePath = textFieldAESInput.getText().trim();
+		String outputFilePath = textFieldAESOutput.getText().trim();
+		String keyFilePath = textFieldAESKey.getText().trim();
 
 		try {
-			List<Pair> properties = fileManager.readPropertiesFromFile(inputFilePath);
-			for (Pair pair : properties) {
-			}
+			cryptoManager.encryptFileSymmetric(inputFilePath, outputFilePath, keyFilePath);
 		} catch (IOException e) {
-			e.printStackTrace();
+			showAlert(Alert.AlertType.ERROR, "IO error occured!");
 		}
+	}
 
+	public void decryptFileAES(ActionEvent event) {
+		String inputFilePath = textFieldAESInput.getText().trim();
+		String outputFilePath = textFieldAESOutput.getText().trim();
+		String keyFilePath = textFieldAESKey.getText().trim();
+
+		try {
+			cryptoManager.decryptFileSymmetric(inputFilePath, outputFilePath, keyFilePath);
+		} catch (IOException e) {
+			showAlert(Alert.AlertType.ERROR, "IO error occured!");
+		}
 	}
 
 	/**
@@ -95,7 +97,7 @@ public class MainController {
 	 */
 	private void chooseFile(TextField textField) {
 		FileChooser fc = new FileChooser();
-		fc.setInitialDirectory(new File("./data"));
+		fc.setInitialDirectory(new File(DEFAULT_DIRECTORY));
 
 		File selectedFile = fc.showOpenDialog(null);
 
@@ -122,7 +124,7 @@ public class MainController {
 
 		try {
 			if (!error) {
-				Runtime.getRuntime().exec("gedit " + filePath);
+				Runtime.getRuntime().exec(DEFAULT_EDITOR + " " + filePath);
 			}
 		} catch (IOException e) {
 			error = true;
