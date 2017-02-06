@@ -1,21 +1,27 @@
 package application.file;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Pair {
 
 	private String key;
-	private String value;
+	private List<String> values = new ArrayList<>();
 
-	Pair(String key, String value) {
+	public Pair(String key) {
 		this.key = key;
-		this.value = value;
 	}
 
 	public String getKey() {
 		return key;
 	}
 
-	public String getValue() {
-		return value;
+	public List<String> getValues() {
+		return values;
+	}
+
+	public void addValue(String value) {
+		values.add(value);
 	}
 
 }
