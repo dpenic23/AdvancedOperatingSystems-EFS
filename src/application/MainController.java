@@ -1,8 +1,13 @@
 package application;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
+import org.apache.commons.codec.binary.Hex;
+
+import application.crypto.CryptoManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -19,6 +24,8 @@ public class MainController {
 
 	@FXML
 	private TextField textFieldAESKey;
+
+	private CryptoManager crypto = new CryptoManager();
 
 	public void chooseFileAESInput(ActionEvent event) {
 		chooseFile(textFieldAESInput);
@@ -42,6 +49,29 @@ public class MainController {
 
 	public void viewFileAESKey(ActionEvent event) {
 		viewFile(textFieldAESKey.getText().trim());
+	}
+
+	public void generateSymmetricKey(ActionEvent event) {
+		String key = Hex.encodeHexString(crypto.generateSymmetricKey().getEncoded());
+		
+		String filePath = textFieldAESKey.getText().trim();
+		File file = new File(filePath);
+		try {
+			file.createNewFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try(FileOutputStream fos = new FileOutputStream(file, false)){
+			fos.write(key.getBytes());
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**

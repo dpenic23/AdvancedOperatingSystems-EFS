@@ -5,13 +5,13 @@ import java.security.NoSuchAlgorithmException;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
-public class Crypto {
+public class CryptoManager {
 
 	private static final int SYMMETRIC_KEY_SIZE = 128;
 
 	private KeyGenerator symmetricKeyGenerator;
 
-	public Crypto() {
+	public CryptoManager() {
 		try {
 			symmetricKeyGenerator = KeyGenerator.getInstance("AES");
 		} catch (NoSuchAlgorithmException e) {
