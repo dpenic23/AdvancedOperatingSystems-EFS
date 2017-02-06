@@ -1,13 +1,15 @@
 package application;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.codec.binary.Hex;
 
 import application.crypto.CryptoManager;
+import application.file.FileManager;
+import application.file.Pair;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -25,7 +27,8 @@ public class MainController {
 	@FXML
 	private TextField textFieldAESKey;
 
-	private CryptoManager crypto = new CryptoManager();
+	private CryptoManager cryptoManager = new CryptoManager();
+	private FileManager fileManager = new FileManager();
 
 	public void chooseFileAESInput(ActionEvent event) {
 		chooseFile(textFieldAESInput);
@@ -52,26 +55,34 @@ public class MainController {
 	}
 
 	public void generateSymmetricKey(ActionEvent event) {
-		String key = Hex.encodeHexString(crypto.generateSymmetricKey().getEncoded());
-		
+		String key = Hex.encodeHexString(cryptoManager.generateSymmetricKey().getEncoded());
 		String filePath = textFieldAESKey.getText().trim();
-		File file = new File(filePath);
+
+		List<Pair> properties = new ArrayList<>();
+
+		properties.add(new Pair("Description", "Secret Key"));
+		properties.add(new Pair("Method", "AES"));
+		properties.add(new Pair("Secret Key", key));
+
 		try {
-			file.createNewFile();
+			fileManager.writePropertiesToFile(properties, filePath);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			showAlert(Alert.AlertType.ERROR, "IO error occured!");
+		}
+
+	}
+
+	public void encryptFileAES(ActionEvent event) {
+		String inputFilePath = textFieldAESInput.getText().trim();
+
+		try {
+			List<Pair> properties = fileManager.readPropertiesFromFile(inputFilePath);
+			for (Pair pair : properties) {
+			}
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		try(FileOutputStream fos = new FileOutputStream(file, false)){
-			fos.write(key.getBytes());
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 	}
 
 	/**
@@ -118,11 +129,15 @@ public class MainController {
 		}
 
 		if (error) {
-			Alert alert = new Alert(Alert.AlertType.WARNING);
-			// alert.setTitle("Information Dialog");
-			alert.setHeaderText("Selected file cannot be opened!");
-			alert.show();
+			showAlert(Alert.AlertType.ERROR, "Selected file cannot be opened!");
 		}
+	}
+
+	private void showAlert(Alert.AlertType alertType, String text) {
+		Alert alert = new Alert(alertType);
+		// alert.setTitle("Information Dialog");
+		alert.setHeaderText(text);
+		alert.show();
 	}
 
 }

@@ -12,6 +12,11 @@ public class Pair {
 		this.key = key;
 	}
 
+	public Pair(String key, String value) {
+		this(key);
+		values.add(value);
+	}
+
 	public String getKey() {
 		return key;
 	}
