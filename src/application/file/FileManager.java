@@ -21,6 +21,17 @@ public class FileManager {
 		return new String(Files.readAllBytes(Paths.get(filePath)));
 	}
 
+	public void writeFile(String filePath, String fileContent) throws IOException {
+		File file = new File(filePath);
+		file.createNewFile();
+
+		try (FileOutputStream fos = new FileOutputStream(file, false)) {
+			fos.write(fileContent.getBytes());
+		} catch (FileNotFoundException e) {
+			// ignorable, file will be created if it doesn't exist
+		}
+	}
+
 	public List<Pair> readPropertiesFromFile(String filePath) throws IOException {
 		List<Pair> properties = new ArrayList<>();
 
@@ -84,14 +95,7 @@ public class FileManager {
 
 		sb.append(END_CRYPTO_DATA);
 
-		File file = new File(filePath);
-		file.createNewFile();
-
-		try (FileOutputStream fos = new FileOutputStream(file, false)) {
-			fos.write(sb.toString().getBytes());
-		} catch (FileNotFoundException e) {
-			// ignorable, file will be created if it doesn't exist
-		}
+		writeFile(filePath, sb.toString());
 	}
 
 }
