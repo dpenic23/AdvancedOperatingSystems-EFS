@@ -61,7 +61,7 @@
                      <children>
                         <Button mnemonicParsing="false" onAction="#generateSymmetricKey" text="Generate key" />
                         <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#encryptFileAES" text="Encrypt" />
-                        <Button layoutX="72.0" layoutY="10.0" mnemonicParsing="false" text="Decrypt" />
+                        <Button layoutX="72.0" layoutY="10.0" mnemonicParsing="false" onAction="#decryptFileAES" text="Decrypt" />
                      </children>
                   </HBox>
                </children>
