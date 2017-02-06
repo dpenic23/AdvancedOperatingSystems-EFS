@@ -69,46 +69,40 @@ public class CryptoManager {
 			throw new CryptoException();
 		}
 		SecretKey secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, SYMMETRIC_ALGORITHM);
-		
+
 		byte[] encrypted = crypt(SYMMETRIC_ALGORITHM, secretKey, Cipher.ENCRYPT_MODE, inputFileContent.getBytes());
 		String encryptedText = Base64.getEncoder().encodeToString(encrypted);
-		
+
 		CryptoProperties properties = new CryptoProperties();
-		
+
 		properties.addProperty(CryptoProperties.DESCRIPTION, "Crypted file");
 		properties.addProperty(CryptoProperties.METHOD, SYMMETRIC_ALGORITHM);
 		properties.addProperty(CryptoProperties.FILE_NAME, inputFilePath);
 		properties.addProperty(CryptoProperties.DATA, encryptedText);
-		
+
 		fileManager.writePropertiesToFile(properties, outputFilePath);
-		
-		/*
-		Cipher cipher;
-		try {
-			cipher = Cipher.getInstance(SYMMETRIC_ALGORITHM);
-			cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-			byte[] byteCipherText = cipher.doFinal(inputFileContent.getBytes());
-
-			String s = Base64.getEncoder().encodeToString(byteCipherText);
-
-			//////////
-			byte[] bytes = Base64.getDecoder().decode(s);
-			cipher = Cipher.getInstance(SYMMETRIC_ALGORITHM);
-			cipher.init(Cipher.DECRYPT_MODE, secretKey);
-			byte[] res = cipher.doFinal(bytes);
-
-			System.out.println(new String(res));
-		} catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException
-				| BadPaddingException e) {
-			e.printStackTrace();
-		}
-		*/
-
 	}
 
 	public void decryptFileSymmetric(String inputFilePath, String outputFilePath, String keyFilePath)
 			throws IOException, CryptoException {
+		CryptoProperties fileProperties = fileManager.readPropertiesFromFile(inputFilePath);
+		String data = fileProperties.valueAssembled(CryptoProperties.DATA);
 
+		CryptoProperties keyProperties = fileManager.readPropertiesFromFile(keyFilePath);
+		String key = keyProperties.valueAssembled(CryptoProperties.SECRET_KEY);
+
+		byte[] decodedKey = {};
+		try {
+			decodedKey = Hex.decodeHex(key.toCharArray());
+		} catch (DecoderException e) {
+			throw new CryptoException();
+		}
+		SecretKey secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, SYMMETRIC_ALGORITHM);
+
+		byte[] encrypted = Base64.getDecoder().decode(data);
+		byte[] decrypted = crypt(SYMMETRIC_ALGORITHM, secretKey, Cipher.DECRYPT_MODE, encrypted);
+
+		fileManager.writeFile(outputFilePath, new String(decrypted));
 	}
 
 	private static byte[] crypt(String algorithm, Key key, int cryptMode, byte[] input) throws CryptoException {
@@ -125,5 +119,5 @@ public class CryptoManager {
 
 		return crypted;
 	}
-	
+
 }
