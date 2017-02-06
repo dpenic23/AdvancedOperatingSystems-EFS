@@ -151,7 +151,7 @@
                   </HBox>
                   <HBox alignment="CENTER" layoutX="15.0" layoutY="144.0" prefHeight="56.0" prefWidth="590.0" spacing="10.0">
                      <children>
-                        <Button mnemonicParsing="false" text="Generate key" />
+                        <Button mnemonicParsing="false" text="Generate keys" />
                         <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Encrypt" />
                         <Button layoutX="72.0" layoutY="10.0" mnemonicParsing="false" text="Decrypt" />
                      </children>
