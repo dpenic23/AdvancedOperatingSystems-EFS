@@ -106,26 +106,26 @@
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="100.0" prefWidth="315.0" spacing="8.0">
                            <children>
-                              <TextField />
-                              <TextField />
-                              <TextField layoutX="10.0" layoutY="35.0" />
-                              <TextField layoutX="10.0" layoutY="83.0" />
+                              <TextField fx:id="textFieldRSAInput" />
+                              <TextField fx:id="textFieldRSAOutput" />
+                              <TextField fx:id="textFieldRSAPublicKey" layoutX="10.0" layoutY="35.0" />
+                              <TextField fx:id="textFieldRSAPrivateKey" layoutX="10.0" layoutY="83.0" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" layoutX="110.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" spacing="8.0">
                            <children>
-                              <Button mnemonicParsing="false" text="Choose" />
-                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Choose" />
-                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" text="Choose" />
-                              <Button layoutX="27.0" layoutY="93.0" mnemonicParsing="false" text="Choose" />
+                              <Button mnemonicParsing="false" onAction="#chooseFileRSAInput" text="Choose" />
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#chooseFileRSAOutput" text="Choose" />
+                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#chooseFileRSAPublicKey" text="Choose" />
+                              <Button layoutX="27.0" layoutY="93.0" mnemonicParsing="false" onAction="#chooseFileRSAPrivateKey" text="Choose" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" layoutX="210.0" layoutY="10.0" prefHeight="100.0" prefWidth="68.0" spacing="8.0">
                            <children>
-                              <Button mnemonicParsing="false" text="View" />
-                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="View" />
-                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" text="View" />
-                              <Button layoutX="19.0" layoutY="93.0" mnemonicParsing="false" text="View" />
+                              <Button mnemonicParsing="false" onAction="#viewFileRSAInput" text="View" />
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#viewFileRSAOutput" text="View" />
+                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#viewFileRSAPublicKey" text="View" />
+                              <Button layoutX="19.0" layoutY="93.0" mnemonicParsing="false" onAction="#viewFileRSAPrivateKey" text="View" />
                            </children>
                         </VBox>
                      </children>
@@ -133,7 +133,7 @@
                   <HBox alignment="CENTER" prefHeight="56.0" prefWidth="590.0" spacing="10.0">
                      <children>
                         <Label text="Key Size:" />
-                        <ComboBox prefWidth="150.0" promptText="&#10;">
+                        <ComboBox fx:id="comboBoxRSAKeySize" prefWidth="150.0" promptText="&#10;">
                         	<items>
                         		<FXCollections fx:factory="observableArrayList">
             						<Integer fx:value="128" />
@@ -151,9 +151,9 @@
                   </HBox>
                   <HBox alignment="CENTER" layoutX="15.0" layoutY="144.0" prefHeight="56.0" prefWidth="590.0" spacing="10.0">
                      <children>
-                        <Button mnemonicParsing="false" text="Generate keys" />
-                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Encrypt" />
-                        <Button layoutX="72.0" layoutY="10.0" mnemonicParsing="false" text="Decrypt" />
+                        <Button mnemonicParsing="false" onAction="#generateAsymmetricKeys" text="Generate keys" />
+                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#encryptFileRSA" text="Encrypt" />
+                        <Button layoutX="72.0" layoutY="10.0" mnemonicParsing="false" onAction="#decryptFileRSA" text="Decrypt" />
                      </children>
                   </HBox>
                </children>

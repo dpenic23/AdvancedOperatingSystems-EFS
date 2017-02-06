@@ -8,6 +8,7 @@ import application.crypto.CryptoManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 
@@ -24,6 +25,21 @@ public class MainController {
 
 	@FXML
 	private TextField textFieldAESKey;
+
+	@FXML
+	private TextField textFieldRSAInput;
+
+	@FXML
+	private TextField textFieldRSAOutput;
+
+	@FXML
+	private TextField textFieldRSAPublicKey;
+
+	@FXML
+	private TextField textFieldRSAPrivateKey;
+
+	@FXML
+	private ComboBox<Integer> comboBoxRSAKeySize;
 
 	private CryptoManager cryptoManager = new CryptoManager();
 
@@ -49,6 +65,38 @@ public class MainController {
 
 	public void viewFileAESKey(ActionEvent event) {
 		viewFile(textFieldAESKey.getText().trim());
+	}
+
+	public void chooseFileRSAInput(ActionEvent event) {
+		chooseFile(textFieldRSAInput);
+	}
+
+	public void chooseFileRSAOutput(ActionEvent event) {
+		chooseFile(textFieldRSAOutput);
+	}
+
+	public void chooseFileRSAPublicKey(ActionEvent event) {
+		chooseFile(textFieldRSAPublicKey);
+	}
+
+	public void chooseFileRSAPrivateKey(ActionEvent event) {
+		chooseFile(textFieldRSAPrivateKey);
+	}
+
+	public void viewFileRSAInput(ActionEvent event) {
+		viewFile(textFieldRSAInput.getText().trim());
+	}
+
+	public void viewFileRSAOutput(ActionEvent event) {
+		viewFile(textFieldRSAOutput.getText().trim());
+	}
+
+	public void viewFileRSAPublicKey(ActionEvent event) {
+		viewFile(textFieldRSAPublicKey.getText().trim());
+	}
+
+	public void viewFileRSAPrivateKey(ActionEvent event) {
+		viewFile(textFieldRSAPrivateKey.getText().trim());
 	}
 
 	public void generateSymmetricKey(ActionEvent event) {
@@ -92,6 +140,18 @@ public class MainController {
 		} catch (CryptoException e) {
 			showAlert(Alert.AlertType.ERROR, "Error occured during the file encryption!");
 		}
+	}
+
+	public void generateAsymmetricKeys(ActionEvent event) {
+
+	}
+
+	public void encryptFileRSA(ActionEvent event) {
+
+	}
+
+	public void decryptFileRSA(ActionEvent event) {
+
 	}
 
 	/**
