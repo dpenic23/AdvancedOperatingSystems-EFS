@@ -218,18 +218,18 @@ public class CryptoManager {
 
 	public String calculateHash(String inputFilePath, String outputFilePath) throws IOException {
 		String inputFileContent = fileManager.readFile(inputFilePath);
-		String digest = DigestUtils.sha1Hex(inputFileContent);
+		String hash = DigestUtils.sha1Hex(inputFileContent);
 
 		CryptoProperties properties = new CryptoProperties();
 
-		properties.addProperty(CryptoProperties.DESCRIPTION, "Signature");
+		properties.addProperty(CryptoProperties.DESCRIPTION, "File hash");
 		properties.addProperty(CryptoProperties.METHOD, HASH_METHOD);
 		properties.addProperty(CryptoProperties.FILE_NAME, inputFilePath);
-		properties.addProperty(CryptoProperties.SIGNATURE, digest);
+		properties.addProperty(CryptoProperties.SIGNATURE, hash);
 
 		fileManager.writePropertiesToFile(properties, outputFilePath);
 
-		return digest;
+		return hash;
 	}
 
 }
