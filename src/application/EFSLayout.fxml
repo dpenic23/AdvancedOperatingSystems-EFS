@@ -106,10 +106,10 @@
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="100.0" prefWidth="315.0" spacing="8.0">
                            <children>
-                              <TextField fx:id="textFieldRSAInput" />
-                              <TextField fx:id="textFieldRSAOutput" />
-                              <TextField fx:id="textFieldRSAPublicKey" layoutX="10.0" layoutY="35.0" />
-                              <TextField fx:id="textFieldRSAPrivateKey" layoutX="10.0" layoutY="83.0" />
+                              <TextField fx:id="textFieldRSAInput" text="./data/asymmetric/input.txt" />
+                              <TextField fx:id="textFieldRSAOutput" text="./data/asymmetric/output.txt" />
+                              <TextField fx:id="textFieldRSAPublicKey" layoutX="10.0" layoutY="35.0" text="./data/asymmetric/public_key.txt" />
+                              <TextField fx:id="textFieldRSAPrivateKey" layoutX="10.0" layoutY="83.0" text="./data/asymmetric/private_key.txt" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" layoutX="110.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" spacing="8.0">
@@ -193,22 +193,22 @@
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="100.0" prefWidth="315.0" spacing="8.0">
                            <children>
-                              <TextField />
-                              <TextField />
-                              <TextField layoutX="10.0" layoutY="67.0" />
+                              <TextField fx:id="textFieldSHAInput" text="./data/hash/input.txt" />
+                              <TextField fx:id="textFieldSHAOutput" text="./data/hash/output.txt" />
+                              <TextField fx:id="textFieldSHAHash" layoutX="10.0" layoutY="67.0" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" layoutX="110.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" spacing="8.0">
                            <children>
-                              <Button mnemonicParsing="false" text="Choose" />
-                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Choose" />
-                              <Button layoutX="27.0" layoutY="67.0" mnemonicParsing="false" text="Calculate" />
+                              <Button mnemonicParsing="false" onAction="#chooseFileSHAInput" text="Choose" />
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#chooseFileSHAOutput" text="Choose" />
+                              <Button layoutX="27.0" layoutY="67.0" mnemonicParsing="false" onAction="#calculateHash" text="Calculate" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" layoutX="210.0" layoutY="10.0" prefHeight="100.0" prefWidth="68.0" spacing="8.0">
                            <children>
-                              <Button mnemonicParsing="false" text="View" />
-                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="View" />
+                              <Button mnemonicParsing="false" onAction="#viewFileSHAInput" text="View" />
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#viewFileSHAOutput" text="View" />
                               <Button disable="true" layoutX="19.0" layoutY="67.0" mnemonicParsing="false" opacity="0.0" />
                            </children>
                         </VBox>

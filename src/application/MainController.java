@@ -41,6 +41,15 @@ public class MainController {
 	@FXML
 	private ComboBox<Integer> comboBoxRSAKeySize;
 
+	@FXML
+	private TextField textFieldSHAInput;
+
+	@FXML
+	private TextField textFieldSHAOutput;
+
+	@FXML
+	private TextField textFieldSHAHash;
+
 	private CryptoManager cryptoManager = new CryptoManager();
 
 	public void chooseFileAESInput(ActionEvent event) {
@@ -83,6 +92,14 @@ public class MainController {
 		chooseFile(textFieldRSAPrivateKey);
 	}
 
+	public void chooseFileSHAInput(ActionEvent event) {
+		chooseFile(textFieldSHAInput);
+	}
+
+	public void chooseFileSHAOutput(ActionEvent event) {
+		chooseFile(textFieldSHAOutput);
+	}
+
 	public void viewFileRSAInput(ActionEvent event) {
 		viewFile(textFieldRSAInput.getText().trim());
 	}
@@ -99,8 +116,15 @@ public class MainController {
 		viewFile(textFieldRSAPrivateKey.getText().trim());
 	}
 
-	public void generateSymmetricKey(ActionEvent event) {
+	public void viewFileSHAInput(ActionEvent event) {
+		viewFile(textFieldSHAInput.getText().trim());
+	}
 
+	public void viewFileSHAOutput(ActionEvent event) {
+		viewFile(textFieldSHAOutput.getText().trim());
+	}
+
+	public void generateSymmetricKey(ActionEvent event) {
 		String keyFilePath = textFieldAESKey.getText().trim();
 
 		try {
@@ -109,7 +133,6 @@ public class MainController {
 		} catch (IOException e) {
 			showAlert(Alert.AlertType.ERROR, "IO error occured!");
 		}
-
 	}
 
 	public void encryptFileAES(ActionEvent event) {
@@ -138,20 +161,63 @@ public class MainController {
 		} catch (IOException e) {
 			showAlert(Alert.AlertType.ERROR, "IO error occured!");
 		} catch (CryptoException e) {
-			showAlert(Alert.AlertType.ERROR, "Error occured during the file encryption!");
+			showAlert(Alert.AlertType.ERROR, "Error occured during the file decryption!");
 		}
 	}
 
 	public void generateAsymmetricKeys(ActionEvent event) {
+		String publicKeyFilePath = textFieldRSAPublicKey.getText().trim();
+		String privateKeyFilePath = textFieldRSAPrivateKey.getText().trim();
+		int keySize = comboBoxRSAKeySize.getValue();
 
+		try {
+			cryptoManager.generateAsymmetricKeys(publicKeyFilePath, privateKeyFilePath, keySize);
+			showAlert(Alert.AlertType.INFORMATION, "Public and private keys successfully generated!");
+		} catch (IOException e) {
+			showAlert(Alert.AlertType.ERROR, "IO error occured!");
+		}
 	}
 
 	public void encryptFileRSA(ActionEvent event) {
+		String inputFilePath = textFieldRSAInput.getText().trim();
+		String outputFilePath = textFieldRSAOutput.getText().trim();
+		String privateKeyFilePath = textFieldRSAPrivateKey.getText().trim();
 
+		try {
+			cryptoManager.encryptFileAsymmetric(inputFilePath, outputFilePath, privateKeyFilePath);
+			showAlert(Alert.AlertType.INFORMATION, "File successfully encrypted!");
+		} catch (IOException e) {
+			showAlert(Alert.AlertType.ERROR, "IO error occured!");
+		} catch (CryptoException e) {
+			showAlert(Alert.AlertType.ERROR, "Error occured during the file encryption!");
+		}
 	}
 
 	public void decryptFileRSA(ActionEvent event) {
+		String inputFilePath = textFieldRSAInput.getText().trim();
+		String outputFilePath = textFieldRSAOutput.getText().trim();
+		String publicKeyFilePath = textFieldRSAPublicKey.getText().trim();
 
+		try {
+			cryptoManager.decryptFileAsymmetric(inputFilePath, outputFilePath, publicKeyFilePath);
+			showAlert(Alert.AlertType.INFORMATION, "File successfully decrypted!");
+		} catch (IOException e) {
+			showAlert(Alert.AlertType.ERROR, "IO error occured!");
+		} catch (CryptoException e) {
+			showAlert(Alert.AlertType.ERROR, "Error occured during the file decryption!");
+		}
+	}
+
+	public void calculateHash(ActionEvent event) {
+		String inputFilePath = textFieldSHAInput.getText().trim();
+		String outputFilePath = textFieldSHAOutput.getText().trim();
+
+		try {
+			String hash = cryptoManager.calculateHash(inputFilePath, outputFilePath);
+			textFieldSHAHash.setText(hash);
+		} catch (IOException e) {
+			showAlert(Alert.AlertType.ERROR, "IO error occured!");
+		}
 	}
 
 	/**
