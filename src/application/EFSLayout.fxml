@@ -59,6 +59,23 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="56.0" prefWidth="590.0" spacing="10.0">
                      <children>
+                        <Label text="Key Size:" />
+                        <ComboBox fx:id="comboBoxAESKeySize" prefHeight="25.0" prefWidth="148.0">
+                        	<items>
+                        		<FXCollections fx:factory="observableArrayList">
+            						<Integer fx:value="128" />
+            						<Integer fx:value="192" />
+            						<Integer fx:value="256" />
+        						</FXCollections>
+                        	</items>
+                        	<value>
+                        		<Integer fx:value="128" />
+                        	</value>
+                        </ComboBox>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="56.0" prefWidth="590.0" spacing="10.0">
+                     <children>
                         <Button mnemonicParsing="false" onAction="#generateSymmetricKey" text="Generate key" />
                         <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#encryptFileAES" text="Encrypt" />
                         <Button layoutX="72.0" layoutY="10.0" mnemonicParsing="false" onAction="#decryptFileAES" text="Decrypt" />

@@ -27,6 +27,9 @@ public class MainController {
 	private TextField textFieldAESKey;
 
 	@FXML
+	private ComboBox<Integer> comboBoxAESKeySize;
+
+	@FXML
 	private TextField textFieldRSAInput;
 
 	@FXML
@@ -313,9 +316,10 @@ public class MainController {
 
 	public void generateSymmetricKey(ActionEvent event) {
 		String keyFilePath = textFieldAESKey.getText().trim();
+		int keySize = comboBoxAESKeySize.getValue();
 
 		try {
-			cryptoManager.generateSymmetricKey(keyFilePath);
+			cryptoManager.generateSymmetricKey(keyFilePath, keySize);
 			showAlert(Alert.AlertType.INFORMATION, "Key successfully generated!");
 		} catch (IOException e) {
 			showAlert(Alert.AlertType.ERROR, "IO error occured!");

@@ -37,8 +37,6 @@ public class CryptoManager {
 	private static final String ASYMMETRIC_ALGORITHM = "RSA";
 	private static final String HASH_METHOD = "SHA-1";
 
-	private static final int SYMMETRIC_KEY_SIZE = 128;
-
 	private KeyGenerator symmetricKeyGenerator;
 	private KeyPairGenerator asymmetricKeyGenerator;
 
@@ -51,17 +49,18 @@ public class CryptoManager {
 		} catch (NoSuchAlgorithmException e) {
 			// ignorable, algorithms are not defined by the user
 		}
-
-		symmetricKeyGenerator.init(SYMMETRIC_KEY_SIZE);
 	}
 
-	public void generateSymmetricKey(String keyFilePath) throws IOException {
+	public void generateSymmetricKey(String keyFilePath, int keySize) throws IOException {
+		symmetricKeyGenerator.init(keySize);
+
 		String key = Hex.encodeHexString(symmetricKeyGenerator.generateKey().getEncoded());
 
 		CryptoProperties keyProperties = new CryptoProperties();
 
 		keyProperties.addProperty(CryptoProperties.DESCRIPTION, "Secret key");
 		keyProperties.addProperty(CryptoProperties.METHOD, SYMMETRIC_ALGORITHM);
+		keyProperties.addProperty(CryptoProperties.KEY_LENGTH, Integer.toHexString(keySize));
 		keyProperties.addProperty(CryptoProperties.SECRET_KEY, key);
 
 		fileManager.writePropertiesToFile(keyProperties, keyFilePath);
