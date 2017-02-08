@@ -323,6 +323,8 @@ public class MainController {
 			showAlert(Alert.AlertType.INFORMATION, "Key successfully generated!");
 		} catch (IOException e) {
 			showAlert(Alert.AlertType.ERROR, "IO error occured!");
+		} catch (CryptoException e) {
+			showAlert(Alert.AlertType.ERROR, e.getMessage());
 		}
 	}
 

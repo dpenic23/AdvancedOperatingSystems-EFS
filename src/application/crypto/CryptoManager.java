@@ -20,7 +20,6 @@ import java.util.Base64;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -37,31 +36,30 @@ public class CryptoManager {
 	private static final String ASYMMETRIC_ALGORITHM = "RSA";
 	private static final String HASH_METHOD = "SHA-1";
 
-	private KeyGenerator symmetricKeyGenerator;
 	private KeyPairGenerator asymmetricKeyGenerator;
 
 	private FileManager fileManager = new FileManager();
 
 	public CryptoManager() {
 		try {
-			symmetricKeyGenerator = KeyGenerator.getInstance(SYMMETRIC_ALGORITHM);
 			asymmetricKeyGenerator = KeyPairGenerator.getInstance(ASYMMETRIC_ALGORITHM);
 		} catch (NoSuchAlgorithmException e) {
 			// ignorable, algorithms are not defined by the user
 		}
 	}
 
-	public void generateSymmetricKey(String keyFilePath, int keySize) throws IOException {
-		symmetricKeyGenerator.init(keySize);
+	public void generateSymmetricKey(String keyFilePath, int keySize) throws IOException, CryptoException {
+		// Generate a symmetric key
+		SecretKey key = CryptoMethod.generateKey(SYMMETRIC_ALGORITHM, keySize);
+		String keyEncoded = Hex.encodeHexString(key.getEncoded());
 
-		String key = Hex.encodeHexString(symmetricKeyGenerator.generateKey().getEncoded());
-
+		// Define its properties and write it to a specified file
 		CryptoProperties keyProperties = new CryptoProperties();
 
 		keyProperties.addProperty(CryptoProperties.DESCRIPTION, "Secret key");
 		keyProperties.addProperty(CryptoProperties.METHOD, SYMMETRIC_ALGORITHM);
 		keyProperties.addProperty(CryptoProperties.KEY_LENGTH, Integer.toHexString(keySize));
-		keyProperties.addProperty(CryptoProperties.SECRET_KEY, key);
+		keyProperties.addProperty(CryptoProperties.SECRET_KEY, keyEncoded);
 
 		fileManager.writePropertiesToFile(keyProperties, keyFilePath);
 	}
