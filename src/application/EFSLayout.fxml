@@ -247,33 +247,33 @@
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="100.0" prefWidth="315.0" spacing="8.0">
                            <children>
-                              <TextField fx:id="textFieldAESInput1" text="./data/envelope/input.txt" />
-                              <TextField fx:id="textFieldAESOutput1" text="./data/envelope/public_key_b.txt" />
-                              <TextField fx:id="textFieldAESKey1" layoutX="10.0" layoutY="35.0" text="./data/envelope/envelope.txt" />
+                              <TextField fx:id="textFieldEnvelopeInput" text="./data/envelope/input.txt" />
+                              <TextField fx:id="textFieldEnvelopePublicKey" text="./data/envelope/public_key_b.txt" />
+                              <TextField fx:id="textFieldEnvelopeEnvelope" layoutX="10.0" layoutY="35.0" text="./data/envelope/envelope.txt" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" layoutX="110.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" spacing="8.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#chooseFileAESInput" text="Choose" />
-                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#chooseFileAESOutput" text="Choose" />
-                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#chooseFileAESKey" text="Choose" />
+                              <Button mnemonicParsing="false" onAction="#chooseFileEnvelopeInput" text="Choose" />
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#chooseFileEnvelopePublicKey" text="Choose" />
+                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#chooseFileEnvelopeEnvelope" text="Choose" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" layoutX="210.0" layoutY="10.0" prefHeight="100.0" prefWidth="68.0" spacing="8.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#viewFileAESInput" text="View" />
-                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#viewFileAESOutput" text="View" />
-                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#viewFileAESKey" text="View" />
+                              <Button mnemonicParsing="false" onAction="#viewFileEnvelopeInput" text="View" />
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#viewFileEnvelopePublicKey" text="View" />
+                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#viewFileEnvelopeEnvelope" text="View" />
                            </children>
                         </VBox>
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="56.0" prefWidth="590.0" spacing="10.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#generateSymmetricKey" text="Create" />
+                        <Button mnemonicParsing="false" onAction="#createEnvelope" text="Create" />
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" layoutX="15.0" layoutY="20.0" prefHeight="100.0" prefWidth="200.0">
+                  <HBox alignment="CENTER" layoutX="15.0" layoutY="20.0" prefHeight="80.0" prefWidth="590.0">
                      <children>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="8.0">
                            <children>
@@ -294,27 +294,27 @@
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="100.0" prefWidth="315.0" spacing="8.0">
                            <children>
-                              <TextField fx:id="textFieldAESInput11" text="./data/envelope/private_key_b.txt" />
-                              <TextField fx:id="textFieldAESOutput11" text="./data/envelope/output.txt" />
+                              <TextField fx:id="textFieldEnvelopePrivateKey" text="./data/envelope/private_key_b.txt" />
+                              <TextField fx:id="textFieldEnvelopeOutput" text="./data/envelope/output.txt" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" layoutX="110.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" spacing="8.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#chooseFileAESInput" text="Choose" />
-                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#chooseFileAESOutput" text="Choose" />
+                              <Button mnemonicParsing="false" onAction="#chooseFileEnvelopePrivateKey" text="Choose" />
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#chooseFileEnvelopeOutput" text="Choose" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" layoutX="210.0" layoutY="10.0" prefHeight="100.0" prefWidth="68.0" spacing="8.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#viewFileAESInput" text="View" />
-                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#viewFileAESOutput" text="View" />
+                              <Button mnemonicParsing="false" onAction="#viewFileEnvelopePrivateKey" text="View" />
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#viewFileEnvelopeOutput" text="View" />
                            </children>
                         </VBox>
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" layoutX="15.0" layoutY="120.0" prefHeight="56.0" prefWidth="590.0" spacing="10.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#generateSymmetricKey" text="Open" />
+                        <Button mnemonicParsing="false" onAction="#openEnvelope" text="Open" />
                      </children>
                   </HBox>
                </children>
@@ -350,30 +350,30 @@
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="100.0" prefWidth="315.0" spacing="8.0">
                            <children>
-                              <TextField fx:id="textFieldAESInput11" text="./data/signature/input.txt" />
-                              <TextField fx:id="textFieldAESOutput11" text="./data/signature/private_key_a.txt" />
-                              <TextField fx:id="textFieldAESKey11" layoutX="10.0" layoutY="35.0" text="./data/signature/signature.txt" />
+                              <TextField fx:id="textFieldSignatureInput" text="./data/signature/input.txt" />
+                              <TextField fx:id="textFieldSignaturePrivateKey" text="./data/signature/private_key_a.txt" />
+                              <TextField fx:id="textFieldSignatureSignature" layoutX="10.0" layoutY="35.0" text="./data/signature/signature.txt" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" layoutX="110.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" spacing="8.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#chooseFileAESInput" text="Choose" />
-                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#chooseFileAESOutput" text="Choose" />
-                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#chooseFileAESKey" text="Choose" />
+                              <Button mnemonicParsing="false" onAction="#chooseFileSignatureInput" text="Choose" />
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#chooseFileSignaturePrivateKey" text="Choose" />
+                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#chooseFileSignatureSignature" text="Choose" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" layoutX="210.0" layoutY="10.0" prefHeight="100.0" prefWidth="68.0" spacing="8.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#viewFileAESInput" text="View" />
-                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#viewFileAESOutput" text="View" />
-                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#viewFileAESKey" text="View" />
+                              <Button mnemonicParsing="false" onAction="#viewFileSignatureInput" text="View" />
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#viewFileSignaturePrivateKey" text="View" />
+                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#viewFileSignatureSignature" text="View" />
                            </children>
                         </VBox>
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="56.0" prefWidth="590.0" spacing="10.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#generateSymmetricKey" text="Create" />
+                        <Button mnemonicParsing="false" onAction="#createSignature" text="Create" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" layoutX="15.0" layoutY="20.0" prefHeight="40.0" prefWidth="590.0">
@@ -392,24 +392,24 @@
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="100.0" prefWidth="315.0" spacing="8.0">
                            <children>
-                              <TextField fx:id="textFieldAESInput111" text="./data/signature/public_key_a.txt" />
+                              <TextField fx:id="textFieldSignaturePublicKey" text="./data/signature/public_key_a.txt" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" layoutX="110.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" spacing="8.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#chooseFileAESInput" text="Choose" />
+                              <Button mnemonicParsing="false" onAction="#chooseFileSignaturePublicKey" text="Choose" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" layoutX="210.0" layoutY="10.0" prefHeight="100.0" prefWidth="68.0" spacing="8.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#viewFileAESInput" text="View" />
+                              <Button mnemonicParsing="false" onAction="#viewFileSignaturePublicKey" text="View" />
                            </children>
                         </VBox>
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" layoutX="15.0" layoutY="120.0" prefHeight="48.0" prefWidth="590.0" spacing="10.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#generateSymmetricKey" text="Verify" />
+                        <Button mnemonicParsing="false" onAction="#verifySignature" text="Verify" />
                      </children>
                      <opaqueInsets>
                         <Insets />
@@ -462,36 +462,36 @@
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="100.0" prefWidth="315.0" spacing="8.0">
                            <children>
-                              <TextField fx:id="textFieldAESInput112" text="./data/stamp/input.txt" />
-                              <TextField fx:id="textFieldAESOutput111" text="./data/stamp/public_key_b.txt" />
-                              <TextField fx:id="textFieldAESKey121" layoutX="10.0" layoutY="35.0" text="./data/stamp/private_key_b.txt" />
-                              <TextField fx:id="textFieldAESKey1211" layoutX="10.0" layoutY="94.0" text="./data/stamp/envelope.txt" />
-                              <TextField fx:id="textFieldAESKey12111" layoutX="10.0" layoutY="111.0" text="./data/stamp/stamp.txt" />
+                              <TextField fx:id="textFieldStampInput" text="./data/stamp/input.txt" />
+                              <TextField fx:id="textFieldStampPublicKeyB" text="./data/stamp/public_key_b.txt" />
+                              <TextField fx:id="textFieldStampPrivateKeyA" layoutX="10.0" layoutY="35.0" text="./data/stamp/private_key_a.txt" />
+                              <TextField fx:id="textFieldStampEnvelope" layoutX="10.0" layoutY="94.0" text="./data/stamp/envelope.txt" />
+                              <TextField fx:id="textFieldStampStamp" layoutX="10.0" layoutY="111.0" text="./data/stamp/stamp.txt" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" layoutX="110.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" spacing="8.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#chooseFileAESInput" text="Choose" />
-                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#chooseFileAESOutput" text="Choose" />
-                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#chooseFileAESKey" text="Choose" />
-                              <Button layoutX="27.0" layoutY="109.0" mnemonicParsing="false" onAction="#chooseFileAESKey" text="Choose" />
-                              <Button layoutX="27.0" layoutY="126.0" mnemonicParsing="false" onAction="#chooseFileAESKey" text="Choose" />
+                              <Button mnemonicParsing="false" onAction="#chooseFileStampInput" text="Choose" />
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#chooseFileStampPublicKeyB" text="Choose" />
+                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#chooseFileStampPrivateKeyA" text="Choose" />
+                              <Button layoutX="27.0" layoutY="109.0" mnemonicParsing="false" onAction="#chooseFileStampEnvelope" text="Choose" />
+                              <Button layoutX="27.0" layoutY="126.0" mnemonicParsing="false" onAction="#chooseFileStampStamp" text="Choose" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" layoutX="210.0" layoutY="10.0" prefHeight="100.0" prefWidth="68.0" spacing="8.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#viewFileAESInput" text="View" />
-                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#viewFileAESOutput" text="View" />
-                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#viewFileAESKey" text="View" />
-                              <Button layoutX="19.0" layoutY="109.0" mnemonicParsing="false" onAction="#viewFileAESKey" text="View" />
-                              <Button layoutX="19.0" layoutY="126.0" mnemonicParsing="false" onAction="#viewFileAESKey" text="View" />
+                              <Button mnemonicParsing="false" onAction="#viewFileStampInput" text="View" />
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#viewFileStampPublicKeyB" text="View" />
+                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#viewFileStampPrivateKeyA" text="View" />
+                              <Button layoutX="19.0" layoutY="109.0" mnemonicParsing="false" onAction="#viewFileStampEnvelope" text="View" />
+                              <Button layoutX="19.0" layoutY="126.0" mnemonicParsing="false" onAction="#viewFileStampStamp" text="View" />
                            </children>
                         </VBox>
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="56.0" prefWidth="590.0" spacing="10.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#generateSymmetricKey" text="Create" />
+                        <Button mnemonicParsing="false" onAction="#createStamp" text="Create" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
@@ -516,30 +516,30 @@
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="100.0" prefWidth="315.0" spacing="8.0">
                            <children>
-                              <TextField fx:id="textFieldAESInput11" text="./data/stamp/public_key_a.txt" />
-                              <TextField fx:id="textFieldAESOutput11" text="./data/stamp/private_key_b.txt" />
-                              <TextField fx:id="textFieldAESKey12" layoutX="10.0" layoutY="35.0" text="./data/stamp/output.txt" />
+                              <TextField fx:id="textFieldStampPublicKeyA" text="./data/stamp/public_key_a.txt" />
+                              <TextField fx:id="textFieldStampPrivateKeyB" text="./data/stamp/private_key_b.txt" />
+                              <TextField fx:id="textFieldStampOutput" layoutX="10.0" layoutY="35.0" text="./data/stamp/output.txt" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" layoutX="110.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" spacing="8.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#chooseFileAESInput" text="Choose" />
-                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#chooseFileAESOutput" text="Choose" />
-                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#chooseFileAESKey" text="Choose" />
+                              <Button mnemonicParsing="false" onAction="#chooseFileStampPublicKeyA" text="Choose" />
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#chooseFileStampPrivateKeyB" text="Choose" />
+                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#chooseFileStampOutput" text="Choose" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" layoutX="210.0" layoutY="10.0" prefHeight="100.0" prefWidth="68.0" spacing="8.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#viewFileAESInput" text="View" />
-                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#viewFileAESOutput" text="View" />
-                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#viewFileAESKey" text="View" />
+                              <Button mnemonicParsing="false" onAction="#viewFileStampPublicKeyA" text="View" />
+                              <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#viewFileStampPrivateKeyB" text="View" />
+                              <Button layoutX="10.0" layoutY="35.0" mnemonicParsing="false" onAction="#viewFileStampOutput" text="View" />
                            </children>
                         </VBox>
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" layoutX="15.0" layoutY="120.0" prefHeight="56.0" prefWidth="590.0" spacing="10.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#generateSymmetricKey" text="Open" />
+                        <Button mnemonicParsing="false" onAction="#openStamp" text="Open" />
                      </children>
                   </HBox>
                </children>

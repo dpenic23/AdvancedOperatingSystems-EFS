@@ -50,26 +50,77 @@ public class MainController {
 	@FXML
 	private TextField textFieldSHAHash;
 
+	@FXML
+	private TextField textFieldEnvelopeInput;
+
+	@FXML
+	private TextField textFieldEnvelopePublicKey;
+
+	@FXML
+	private TextField textFieldEnvelopeEnvelope;
+
+	@FXML
+	private TextField textFieldEnvelopePrivateKey;
+
+	@FXML
+	private TextField textFieldEnvelopeOutput;
+
+	@FXML
+	private TextField textFieldSignatureInput;
+
+	@FXML
+	private TextField textFieldSignaturePrivateKey;
+
+	@FXML
+	private TextField textFieldSignatureSignature;
+
+	@FXML
+	private TextField textFieldSignaturePublicKey;
+
+	@FXML
+	private TextField textFieldStampInput;
+
+	@FXML
+	private TextField textFieldStampPublicKeyB;
+
+	@FXML
+	private TextField textFieldStampPrivateKeyA;
+
+	@FXML
+	private TextField textFieldStampEnvelope;
+
+	@FXML
+	private TextField textFieldStampStamp;
+
+	@FXML
+	private TextField textFieldStampPublicKeyA;
+
+	@FXML
+	private TextField textFieldStampPrivateKeyB;
+
+	@FXML
+	private TextField textFieldStampOutput;
+
 	private CryptoManager cryptoManager = new CryptoManager();
 
 	public void chooseFileAESInput(ActionEvent event) {
 		chooseFile(textFieldAESInput);
 	}
 
-	public void chooseFileAESOutput(ActionEvent event) {
-		chooseFile(textFieldAESOutput);
-	}
-
-	public void chooseFileAESKey(ActionEvent event) {
-		chooseFile(textFieldAESKey);
-	}
-
 	public void viewFileAESInput(ActionEvent event) {
 		viewFile(textFieldAESInput.getText().trim());
 	}
 
+	public void chooseFileAESOutput(ActionEvent event) {
+		chooseFile(textFieldAESOutput);
+	}
+
 	public void viewFileAESOutput(ActionEvent event) {
 		viewFile(textFieldAESOutput.getText().trim());
+	}
+
+	public void chooseFileAESKey(ActionEvent event) {
+		chooseFile(textFieldAESKey);
 	}
 
 	public void viewFileAESKey(ActionEvent event) {
@@ -80,48 +131,184 @@ public class MainController {
 		chooseFile(textFieldRSAInput);
 	}
 
-	public void chooseFileRSAOutput(ActionEvent event) {
-		chooseFile(textFieldRSAOutput);
-	}
-
-	public void chooseFileRSAPublicKey(ActionEvent event) {
-		chooseFile(textFieldRSAPublicKey);
-	}
-
-	public void chooseFileRSAPrivateKey(ActionEvent event) {
-		chooseFile(textFieldRSAPrivateKey);
-	}
-
-	public void chooseFileSHAInput(ActionEvent event) {
-		chooseFile(textFieldSHAInput);
-	}
-
-	public void chooseFileSHAOutput(ActionEvent event) {
-		chooseFile(textFieldSHAOutput);
-	}
-
 	public void viewFileRSAInput(ActionEvent event) {
 		viewFile(textFieldRSAInput.getText().trim());
+	}
+
+	public void chooseFileRSAOutput(ActionEvent event) {
+		chooseFile(textFieldRSAOutput);
 	}
 
 	public void viewFileRSAOutput(ActionEvent event) {
 		viewFile(textFieldRSAOutput.getText().trim());
 	}
 
+	public void chooseFileRSAPublicKey(ActionEvent event) {
+		chooseFile(textFieldRSAPublicKey);
+	}
+
 	public void viewFileRSAPublicKey(ActionEvent event) {
 		viewFile(textFieldRSAPublicKey.getText().trim());
+	}
+
+	public void chooseFileRSAPrivateKey(ActionEvent event) {
+		chooseFile(textFieldRSAPrivateKey);
 	}
 
 	public void viewFileRSAPrivateKey(ActionEvent event) {
 		viewFile(textFieldRSAPrivateKey.getText().trim());
 	}
 
+	public void chooseFileSHAInput(ActionEvent event) {
+		chooseFile(textFieldSHAInput);
+	}
+
 	public void viewFileSHAInput(ActionEvent event) {
 		viewFile(textFieldSHAInput.getText().trim());
 	}
 
+	public void chooseFileSHAOutput(ActionEvent event) {
+		chooseFile(textFieldSHAOutput);
+	}
+
 	public void viewFileSHAOutput(ActionEvent event) {
 		viewFile(textFieldSHAOutput.getText().trim());
+	}
+
+	public void chooseFileEnvelopeInput(ActionEvent event) {
+		chooseFile(textFieldEnvelopeInput);
+	}
+
+	public void viewFileEnvelopeInput(ActionEvent event) {
+		viewFile(textFieldEnvelopeInput.getText().trim());
+	}
+
+	public void chooseFileEnvelopePublicKey(ActionEvent event) {
+		chooseFile(textFieldEnvelopePublicKey);
+	}
+
+	public void viewFileEnvelopePublicKey(ActionEvent event) {
+		viewFile(textFieldEnvelopePublicKey.getText().trim());
+	}
+
+	public void chooseFileEnvelopeEnvelope(ActionEvent event) {
+		chooseFile(textFieldEnvelopeEnvelope);
+	}
+
+	public void viewFileEnvelopeEnvelope(ActionEvent event) {
+		viewFile(textFieldEnvelopeEnvelope.getText().trim());
+	}
+
+	public void chooseFileEnvelopePrivateKey(ActionEvent event) {
+		chooseFile(textFieldEnvelopePrivateKey);
+	}
+
+	public void viewFileEnvelopePrivateKey(ActionEvent event) {
+		viewFile(textFieldEnvelopePrivateKey.getText().trim());
+	}
+
+	public void chooseFileEnvelopeOutput(ActionEvent event) {
+		chooseFile(textFieldEnvelopeOutput);
+	}
+
+	public void viewFileEnvelopeOutput(ActionEvent event) {
+		viewFile(textFieldEnvelopeOutput.getText().trim());
+	}
+
+	public void chooseFileSignatureInput(ActionEvent event) {
+		chooseFile(textFieldSignatureInput);
+	}
+
+	public void viewFileSignatureInput(ActionEvent event) {
+		viewFile(textFieldSignatureInput.getText().trim());
+	}
+
+	public void chooseFileSignaturePrivateKey(ActionEvent event) {
+		chooseFile(textFieldSignaturePrivateKey);
+	}
+
+	public void viewFileSignaturePrivateKey(ActionEvent event) {
+		viewFile(textFieldSignatureInput.getText().trim());
+	}
+
+	public void chooseFileSignatureSignature(ActionEvent event) {
+		chooseFile(textFieldSignatureSignature);
+	}
+
+	public void viewFileSignatureSignature(ActionEvent event) {
+		viewFile(textFieldSignatureSignature.getText().trim());
+	}
+
+	public void chooseFileSignaturePublicKey(ActionEvent event) {
+		chooseFile(textFieldSignaturePublicKey);
+	}
+
+	public void viewFileSignaturePublicKey(ActionEvent event) {
+		viewFile(textFieldSignaturePublicKey.getText().trim());
+	}
+
+	public void chooseFileStampInput(ActionEvent event) {
+		chooseFile(textFieldStampInput);
+	}
+
+	public void viewFileStampInput(ActionEvent event) {
+		viewFile(textFieldStampInput.getText().trim());
+	}
+
+	public void chooseFileStampPublicKeyB(ActionEvent event) {
+		chooseFile(textFieldStampPublicKeyB);
+	}
+
+	public void viewFileStampPublicKeyB(ActionEvent event) {
+		viewFile(textFieldStampPublicKeyB.getText().trim());
+	}
+
+	public void chooseFileStampPrivateKeyA(ActionEvent event) {
+		chooseFile(textFieldStampPrivateKeyA);
+	}
+
+	public void viewFileStampPrivateKeyA(ActionEvent event) {
+		viewFile(textFieldStampPrivateKeyA.getText().trim());
+	}
+
+	public void chooseFileStampEnvelope(ActionEvent event) {
+		chooseFile(textFieldStampEnvelope);
+	}
+
+	public void viewFileStampEnvelope(ActionEvent event) {
+		viewFile(textFieldStampEnvelope.getText().trim());
+	}
+
+	public void chooseFileStampStamp(ActionEvent event) {
+		chooseFile(textFieldStampStamp);
+	}
+
+	public void viewFileStampStamp(ActionEvent event) {
+		viewFile(textFieldStampStamp.getText().trim());
+	}
+
+	public void chooseFileStampPublicKeyA(ActionEvent event) {
+		chooseFile(textFieldStampPublicKeyA);
+	}
+
+	public void viewFileStampPublicKeyA(ActionEvent event) {
+		viewFile(textFieldStampPublicKeyA.getText().trim());
+	}
+
+	public void chooseFileStampPrivateKeyB(ActionEvent event) {
+		chooseFile(textFieldStampPrivateKeyB);
+	}
+
+	public void viewFileStampPrivateKeyB(ActionEvent event) {
+		viewFile(textFieldStampPrivateKeyB.getText().trim());
+	}
+
+	public void chooseFileStampOutput(ActionEvent event) {
+		chooseFile(textFieldStampOutput);
+	}
+
+	public void viewFileStampOutput(ActionEvent event) {
+		viewFile(textFieldStampOutput.getText().trim());
 	}
 
 	public void generateSymmetricKey(ActionEvent event) {
@@ -218,6 +405,30 @@ public class MainController {
 		} catch (IOException e) {
 			showAlert(Alert.AlertType.ERROR, "IO error occured!");
 		}
+	}
+
+	public void createEnvelope(ActionEvent event) {
+
+	}
+
+	public void openEnvelope(ActionEvent event) {
+
+	}
+
+	public void createSignature(ActionEvent event) {
+
+	}
+
+	public void verifySignature(ActionEvent event) {
+
+	}
+
+	public void createStamp(ActionEvent event) {
+
+	}
+
+	public void openStamp(ActionEvent event) {
+
 	}
 
 	/**
