@@ -64,8 +64,6 @@
                         	<items>
                         		<FXCollections fx:factory="observableArrayList">
             						<Integer fx:value="128" />
-            						<Integer fx:value="192" />
-            						<Integer fx:value="256" />
         						</FXCollections>
                         	</items>
                         	<value>
