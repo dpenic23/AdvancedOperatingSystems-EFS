@@ -2,8 +2,6 @@ package application.crypto;
 
 import java.io.IOException;
 import java.math.BigInteger;
-import java.security.InvalidKeyException;
-import java.security.Key;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -17,14 +15,9 @@ import java.security.spec.RSAPrivateKeySpec;
 import java.security.spec.RSAPublicKeySpec;
 import java.util.Base64;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 
-import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -53,7 +46,7 @@ public class CryptoManager {
 		SecretKey key = CryptoMethod.generateKey(SYMMETRIC_ALGORITHM, keySize);
 		String keyEncoded = Hex.encodeHexString(key.getEncoded());
 
-		// Define its properties and write it to a specified file
+		// Define its properties and write it to the specified file
 		CryptoProperties keyProperties = new CryptoProperties();
 
 		keyProperties.addProperty(CryptoProperties.DESCRIPTION, "Secret key");
@@ -62,6 +55,49 @@ public class CryptoManager {
 		keyProperties.addProperty(CryptoProperties.SECRET_KEY, keyEncoded);
 
 		fileManager.writePropertiesToFile(keyProperties, keyFilePath);
+	}
+
+	public void encryptFileSymmetric(String inputFilePath, String outputFilePath, String keyFilePath)
+			throws IOException, CryptoException {
+		// Read all the data from the file to encrypt
+		String data = fileManager.readFile(inputFilePath);
+
+		// Read the secret key
+		CryptoProperties keyProperties = fileManager.readPropertiesFromFile(keyFilePath);
+		String key = keyProperties.valueAssembled(CryptoProperties.SECRET_KEY);
+		SecretKey secretKey = CryptoMethod.getSecretKey(SYMMETRIC_ALGORITHM, key);
+
+		// Encrypt the data
+		byte[] encrypted = CryptoMethod.crypt(SYMMETRIC_ALGORITHM, secretKey, Cipher.ENCRYPT_MODE, data.getBytes());
+		String encryptedData = Base64.getEncoder().encodeToString(encrypted);
+
+		// Define the file properties and write it to the specified file
+		CryptoProperties properties = new CryptoProperties();
+
+		properties.addProperty(CryptoProperties.DESCRIPTION, "Crypted file");
+		properties.addProperty(CryptoProperties.METHOD, SYMMETRIC_ALGORITHM);
+		properties.addProperty(CryptoProperties.FILE_NAME, inputFilePath);
+		properties.addProperty(CryptoProperties.DATA, encryptedData);
+
+		fileManager.writePropertiesToFile(properties, outputFilePath);
+	}
+
+	public void decryptFileSymmetric(String inputFilePath, String outputFilePath, String keyFilePath)
+			throws IOException, CryptoException {
+		// Read the encrypted data
+		CryptoProperties fileProperties = fileManager.readPropertiesFromFile(inputFilePath);
+		String data = fileProperties.valueAssembled(CryptoProperties.DATA);
+
+		// Read the secret key
+		CryptoProperties keyProperties = fileManager.readPropertiesFromFile(keyFilePath);
+		String key = keyProperties.valueAssembled(CryptoProperties.SECRET_KEY);
+		SecretKey secretKey = CryptoMethod.getSecretKey(SYMMETRIC_ALGORITHM, key);
+
+		// Decrypt the data and write the content to the file
+		byte[] encrypted = Base64.getDecoder().decode(data);
+		byte[] decrypted = CryptoMethod.crypt(SYMMETRIC_ALGORITHM, secretKey, Cipher.DECRYPT_MODE, encrypted);
+
+		fileManager.writeFile(outputFilePath, new String(decrypted));
 	}
 
 	public void generateAsymmetricKeys(String publicKeyFilePath, String privateKeyFilePath, int keySize)
@@ -95,34 +131,6 @@ public class CryptoManager {
 
 	}
 
-	public void encryptFileSymmetric(String inputFilePath, String outputFilePath, String keyFilePath)
-			throws IOException, CryptoException {
-		String inputFileContent = fileManager.readFile(inputFilePath);
-
-		CryptoProperties keyProperties = fileManager.readPropertiesFromFile(keyFilePath);
-		String key = keyProperties.valueAssembled(CryptoProperties.SECRET_KEY);
-
-		byte[] decodedKey = {};
-		try {
-			decodedKey = Hex.decodeHex(key.toCharArray());
-		} catch (DecoderException e) {
-			throw new CryptoException();
-		}
-		SecretKey secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, SYMMETRIC_ALGORITHM);
-
-		byte[] encrypted = crypt(SYMMETRIC_ALGORITHM, secretKey, Cipher.ENCRYPT_MODE, inputFileContent.getBytes());
-		String encryptedText = Base64.getEncoder().encodeToString(encrypted);
-
-		CryptoProperties properties = new CryptoProperties();
-
-		properties.addProperty(CryptoProperties.DESCRIPTION, "Crypted file");
-		properties.addProperty(CryptoProperties.METHOD, SYMMETRIC_ALGORITHM);
-		properties.addProperty(CryptoProperties.FILE_NAME, inputFilePath);
-		properties.addProperty(CryptoProperties.DATA, encryptedText);
-
-		fileManager.writePropertiesToFile(properties, outputFilePath);
-	}
-
 	public void encryptFileAsymmetric(String inputFilePath, String outputFilePath, String privateKeyFilePath)
 			throws IOException, CryptoException {
 		String inputFileContent = fileManager.readFile(inputFilePath);
@@ -140,7 +148,8 @@ public class CryptoManager {
 			throw new CryptoException();
 		}
 
-		byte[] encrypted = crypt(ASYMMETRIC_ALGORITHM, key, Cipher.ENCRYPT_MODE, inputFileContent.getBytes());
+		byte[] encrypted = CryptoMethod.crypt(ASYMMETRIC_ALGORITHM, key, Cipher.ENCRYPT_MODE,
+				inputFileContent.getBytes());
 		String encryptedText = Base64.getEncoder().encodeToString(encrypted);
 
 		CryptoProperties properties = new CryptoProperties();
@@ -151,28 +160,6 @@ public class CryptoManager {
 		properties.addProperty(CryptoProperties.DATA, encryptedText);
 
 		fileManager.writePropertiesToFile(properties, outputFilePath);
-	}
-
-	public void decryptFileSymmetric(String inputFilePath, String outputFilePath, String keyFilePath)
-			throws IOException, CryptoException {
-		CryptoProperties fileProperties = fileManager.readPropertiesFromFile(inputFilePath);
-		String data = fileProperties.valueAssembled(CryptoProperties.DATA);
-
-		CryptoProperties keyProperties = fileManager.readPropertiesFromFile(keyFilePath);
-		String key = keyProperties.valueAssembled(CryptoProperties.SECRET_KEY);
-
-		byte[] decodedKey = {};
-		try {
-			decodedKey = Hex.decodeHex(key.toCharArray());
-		} catch (DecoderException e) {
-			throw new CryptoException();
-		}
-		SecretKey secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, SYMMETRIC_ALGORITHM);
-
-		byte[] encrypted = Base64.getDecoder().decode(data);
-		byte[] decrypted = crypt(SYMMETRIC_ALGORITHM, secretKey, Cipher.DECRYPT_MODE, encrypted);
-
-		fileManager.writeFile(outputFilePath, new String(decrypted));
 	}
 
 	public void decryptFileAsymmetric(String inputFilePath, String outputFilePath, String publicKeyFilePath)
@@ -193,24 +180,9 @@ public class CryptoManager {
 		}
 
 		byte[] encrypted = Base64.getDecoder().decode(data);
-		byte[] decrypted = crypt(ASYMMETRIC_ALGORITHM, key, Cipher.DECRYPT_MODE, encrypted);
+		byte[] decrypted = CryptoMethod.crypt(ASYMMETRIC_ALGORITHM, key, Cipher.DECRYPT_MODE, encrypted);
 
 		fileManager.writeFile(outputFilePath, new String(decrypted));
-	}
-
-	private static byte[] crypt(String algorithm, Key key, int cryptMode, byte[] input) throws CryptoException {
-		byte[] crypted = {};
-
-		try {
-			Cipher cipher = Cipher.getInstance(algorithm);
-			cipher.init(cryptMode, key);
-			crypted = cipher.doFinal(input);
-		} catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException
-				| BadPaddingException e) {
-			throw new CryptoException();
-		}
-
-		return crypted;
 	}
 
 	public String calculateHash(String inputFilePath, String outputFilePath) throws IOException {

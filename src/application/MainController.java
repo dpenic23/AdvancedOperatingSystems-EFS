@@ -339,7 +339,7 @@ public class MainController {
 		} catch (IOException e) {
 			showAlert(Alert.AlertType.ERROR, "IO error occured!");
 		} catch (CryptoException e) {
-			showAlert(Alert.AlertType.ERROR, "Error occured during the file encryption!");
+			showAlert(Alert.AlertType.ERROR, e.getMessage());
 		}
 	}
 
