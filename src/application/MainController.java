@@ -482,10 +482,42 @@ public class MainController {
 		String privateKeyAFilePath = textFieldStampPrivateKeyA.getText().trim();
 		String envelopeFilePath = textFieldStampEnvelope.getText().trim();
 		String stampFilePath = textFieldStampStamp.getText().trim();
+
+		try {
+			cryptoManager.createEnvelope(inputFilePath, publicKeyBFilePath, envelopeFilePath);
+			cryptoManager.createSignature(envelopeFilePath, privateKeyAFilePath, stampFilePath);
+			showAlert(Alert.AlertType.INFORMATION, "Digital stamp successfully created!");
+		} catch (IOException e) {
+			showAlert(Alert.AlertType.ERROR, "IO error occured!");
+		} catch (CryptoException e) {
+			showAlert(Alert.AlertType.ERROR, e.getMessage());
+		}
 	}
 
 	public void openStamp(ActionEvent event) {
+		String envelopeFilePath = textFieldStampEnvelope.getText().trim();
+		String stampFilePath = textFieldStampStamp.getText().trim();
+		String publicKeyAFilePath = textFieldStampPublicKeyA.getText().trim();
+		String privateKeyBFilePath = textFieldStampPrivateKeyB.getText().trim();
+		String outputFilePath = textFieldStampOutput.getText().trim();
 
+		try {
+			cryptoManager.openEnvelope(envelopeFilePath, privateKeyBFilePath, outputFilePath);
+			boolean isMatch = cryptoManager.verifySignature(envelopeFilePath, stampFilePath, publicKeyAFilePath);
+
+			String message = "Digital stamp successfully created! ";
+			if (isMatch) {
+				message += "Calculated hash does match.";
+			} else {
+				message += "Calculated hash does not match.";
+			}
+
+			showAlert(Alert.AlertType.INFORMATION, message);
+		} catch (IOException e) {
+			showAlert(Alert.AlertType.ERROR, "IO error occured!");
+		} catch (CryptoException e) {
+			showAlert(Alert.AlertType.ERROR, e.getMessage());
+		}
 	}
 
 	/**
