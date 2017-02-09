@@ -231,7 +231,7 @@ public class MainController {
 	}
 
 	public void viewFileSignaturePrivateKey(ActionEvent event) {
-		viewFile(textFieldSignatureInput.getText().trim());
+		viewFile(textFieldSignaturePrivateKey.getText().trim());
 	}
 
 	public void chooseFileSignatureSignature(ActionEvent event) {
@@ -461,12 +461,27 @@ public class MainController {
 	}
 
 	public void verifySignature(ActionEvent event) {
+		String inputFilePath = textFieldSignatureInput.getText().trim();
 		String signatureFilePath = textFieldSignatureSignature.getText().trim();
 		String keyFilePath = textFieldSignaturePublicKey.getText().trim();
+
+		try {
+			boolean isMatch = cryptoManager.verifySignature(inputFilePath, signatureFilePath, keyFilePath);
+			String message = "Calculated values " + (isMatch ? "do" : "do not") + " match!";
+			showAlert(Alert.AlertType.INFORMATION, message);
+		} catch (IOException e) {
+			showAlert(Alert.AlertType.ERROR, "IO error occured!");
+		} catch (CryptoException e) {
+			showAlert(Alert.AlertType.ERROR, e.getMessage());
+		}
 	}
 
 	public void createStamp(ActionEvent event) {
-
+		String inputFilePath = textFieldStampInput.getText().trim();
+		String publicKeyBFilePath = textFieldStampPublicKeyB.getText().trim();
+		String privateKeyAFilePath = textFieldStampPrivateKeyA.getText().trim();
+		String envelopeFilePath = textFieldStampEnvelope.getText().trim();
+		String stampFilePath = textFieldStampStamp.getText().trim();
 	}
 
 	public void openStamp(ActionEvent event) {

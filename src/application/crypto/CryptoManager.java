@@ -274,4 +274,29 @@ public class CryptoManager {
 		fileManager.writePropertiesToFile(properties, signatureFilePath);
 	}
 
+	public boolean verifySignature(String inputFilePath, String signatureFilePath, String keyFilePath)
+			throws IOException, CryptoException {
+		// Read the file data and calculate its hash value
+		String data = fileManager.readFile(inputFilePath);
+		String hash = CryptoMethod.calculateHash(data);
+
+		// Read the public key
+		CryptoProperties keyProperties = fileManager.readPropertiesFromFile(keyFilePath);
+		String modulus = keyProperties.valueAssembled(CryptoProperties.MODULUS);
+		String exp = keyProperties.valueAssembled(CryptoProperties.PUBLIC_EXP);
+		PublicKey publicKey = CryptoMethod.getPublicKey(ASYMMETRIC_ALGORITHM, modulus, exp);
+
+		// Read the encrypted hash value
+		CryptoProperties signatureProperties = fileManager.readPropertiesFromFile(signatureFilePath);
+		String signatureHex = signatureProperties.valueAssembled(CryptoProperties.SIGNATURE);
+
+		// Decrypt the signature with the public key
+		byte[] signature = CryptoMethod.crypt(ASYMMETRIC_ALGORITHM, publicKey, Cipher.DECRYPT_MODE,
+				DatatypeConverter.parseHexBinary(signatureHex));
+
+		// Check if the calculated hash value and the decrypted signature do
+		// match
+		return hash.equals(new String(signature));
+	}
+
 }
