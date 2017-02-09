@@ -12,6 +12,7 @@ import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPrivateKeySpec;
 import java.security.spec.RSAPublicKeySpec;
+import java.util.Base64;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -38,6 +39,15 @@ public class CryptoMethod {
 		}
 
 		return keyGenerator.generateKey();
+	}
+
+	public static String generateKeyHex(String algorithm, int keySize) throws CryptoException {
+		SecretKey key = generateKey(algorithm, keySize);
+		return keyToHex(key);
+	}
+
+	public static String keyToHex(Key key) {
+		return Hex.encodeHexString(key.getEncoded());
 	}
 
 	public static SecretKey getSecretKey(String algorithm, String key) throws CryptoException {
@@ -106,6 +116,11 @@ public class CryptoMethod {
 		}
 
 		return crypted;
+	}
+
+	public static String cryptBase64(String algorithm, Key key, int cryptMode, byte[] input) throws CryptoException {
+		byte[] bytes = crypt(algorithm, key, cryptMode, input);
+		return Base64.getEncoder().encodeToString(bytes);
 	}
 
 	public static String calculateHash(String data) {

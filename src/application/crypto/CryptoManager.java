@@ -11,8 +11,6 @@ import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 
-import org.apache.commons.codec.binary.Hex;
-
 import application.file.FileManager;
 
 public class CryptoManager {
@@ -21,6 +19,9 @@ public class CryptoManager {
 	private static final String ASYMMETRIC_ALGORITHM = "RSA";
 	private static final String HASH_METHOD = "SHA-1";
 
+	private static final int DEFAULT_SYMM_KEY_SIZE = 128;
+	private static final int DEFAULT_ASYMM_KEY_SIZE = 512;
+
 	private FileManager fileManager = new FileManager();
 
 	public CryptoManager() {
@@ -28,8 +29,7 @@ public class CryptoManager {
 
 	public void generateSymmetricKey(String keyFilePath, int keySize) throws IOException, CryptoException {
 		// Generate a symmetric key
-		SecretKey key = CryptoMethod.generateKey(SYMMETRIC_ALGORITHM, keySize);
-		String keyEncoded = Hex.encodeHexString(key.getEncoded());
+		String keyHex = CryptoMethod.generateKeyHex(SYMMETRIC_ALGORITHM, keySize);
 
 		// Define its properties and write it to the specified file
 		CryptoProperties keyProperties = new CryptoProperties();
@@ -37,7 +37,7 @@ public class CryptoManager {
 		keyProperties.addProperty(CryptoProperties.DESCRIPTION, "Secret key");
 		keyProperties.addProperty(CryptoProperties.METHOD, SYMMETRIC_ALGORITHM);
 		keyProperties.addProperty(CryptoProperties.KEY_LENGTH, Integer.toHexString(keySize));
-		keyProperties.addProperty(CryptoProperties.SECRET_KEY, keyEncoded);
+		keyProperties.addProperty(CryptoProperties.SECRET_KEY, keyHex);
 
 		fileManager.writePropertiesToFile(keyProperties, keyFilePath);
 	}
@@ -53,8 +53,8 @@ public class CryptoManager {
 		SecretKey secretKey = CryptoMethod.getSecretKey(SYMMETRIC_ALGORITHM, key);
 
 		// Encrypt the data
-		byte[] encrypted = CryptoMethod.crypt(SYMMETRIC_ALGORITHM, secretKey, Cipher.ENCRYPT_MODE, data.getBytes());
-		String encryptedData = Base64.getEncoder().encodeToString(encrypted);
+		String encryptedData = CryptoMethod.cryptBase64(SYMMETRIC_ALGORITHM, secretKey, Cipher.ENCRYPT_MODE,
+				data.getBytes());
 
 		// Define the file properties and write it to the specified file
 		CryptoProperties properties = new CryptoProperties();
@@ -130,8 +130,8 @@ public class CryptoManager {
 		PublicKey key = CryptoMethod.getPublicKey(ASYMMETRIC_ALGORITHM, modulus, exp);
 
 		// Encrypt the data
-		byte[] encrypted = CryptoMethod.crypt(ASYMMETRIC_ALGORITHM, key, Cipher.ENCRYPT_MODE, data.getBytes());
-		String encryptedData = Base64.getEncoder().encodeToString(encrypted);
+		String encryptedData = CryptoMethod.cryptBase64(ASYMMETRIC_ALGORITHM, key, Cipher.ENCRYPT_MODE,
+				data.getBytes());
 
 		// Define the file properties and write it to the specified file
 		CryptoProperties properties = new CryptoProperties();
@@ -180,6 +180,42 @@ public class CryptoManager {
 		fileManager.writePropertiesToFile(properties, outputFilePath);
 
 		return hash;
+	}
+
+	public void createEnvelope(String inputFilePath, String keyFilePath, String envelopeFilePath)
+			throws IOException, CryptoException {
+		// Read the data to be encrypted
+		String data = fileManager.readFile(inputFilePath);
+
+		// Generate the symmetric key for data encryption
+		SecretKey key = CryptoMethod.generateKey(SYMMETRIC_ALGORITHM, DEFAULT_SYMM_KEY_SIZE);
+		String keyHex = CryptoMethod.keyToHex(key);
+
+		// Encrypt the data
+		String encryptedData = CryptoMethod.cryptBase64(SYMMETRIC_ALGORITHM, key, Cipher.ENCRYPT_MODE, data.getBytes());
+
+		// Read the public key for the symmetric key encryption
+		CryptoProperties keyProperties = fileManager.readPropertiesFromFile(keyFilePath);
+		String modulus = keyProperties.valueAssembled(CryptoProperties.MODULUS);
+		String exp = keyProperties.valueAssembled(CryptoProperties.PUBLIC_EXP);
+		PublicKey publicKey = CryptoMethod.getPublicKey(ASYMMETRIC_ALGORITHM, modulus, exp);
+
+		// Encrypt the symmetric key using the asymmetric algorithm
+		String encryptedKey = CryptoMethod.cryptBase64(ASYMMETRIC_ALGORITHM, publicKey, Cipher.ENCRYPT_MODE,
+				keyHex.getBytes());
+
+		// Write all the properties to the file
+		CryptoProperties properties = new CryptoProperties();
+
+		properties.addProperty(CryptoProperties.DESCRIPTION, "Envelope");
+		properties.addProperty(CryptoProperties.METHOD, SYMMETRIC_ALGORITHM);
+		properties.addProperty(CryptoProperties.METHOD, ASYMMETRIC_ALGORITHM);
+		properties.addProperty(CryptoProperties.KEY_LENGTH, Integer.toHexString(DEFAULT_SYMM_KEY_SIZE));
+		properties.addProperty(CryptoProperties.KEY_LENGTH, Integer.toHexString(DEFAULT_ASYMM_KEY_SIZE));
+		properties.addProperty(CryptoProperties.ENVELOPE_DATA, encryptedData);
+		properties.addProperty(CryptoProperties.ENVELOPE_CRYPT_KEY, encryptedKey);
+
+		fileManager.writePropertiesToFile(properties, envelopeFilePath);
 	}
 
 }

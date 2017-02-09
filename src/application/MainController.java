@@ -416,7 +416,18 @@ public class MainController {
 	}
 
 	public void createEnvelope(ActionEvent event) {
+		String inputFilePath = textFieldEnvelopeInput.getText().trim();
+		String keyFilePath = textFieldEnvelopePublicKey.getText().trim();
+		String envelopeFilePath = textFieldEnvelopeEnvelope.getText().trim();
 
+		try {
+			cryptoManager.createEnvelope(inputFilePath, keyFilePath, envelopeFilePath);
+			showAlert(Alert.AlertType.INFORMATION, "Digital envelope successfully created!");
+		} catch (IOException e) {
+			showAlert(Alert.AlertType.ERROR, "IO error occured!");
+		} catch (CryptoException e) {
+			showAlert(Alert.AlertType.ERROR, e.getMessage());
+		}
 	}
 
 	public void openEnvelope(ActionEvent event) {
