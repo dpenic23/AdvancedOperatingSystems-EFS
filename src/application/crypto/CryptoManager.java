@@ -12,7 +12,6 @@ import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 
 import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.codec.digest.DigestUtils;
 
 import application.file.FileManager;
 
@@ -166,9 +165,11 @@ public class CryptoManager {
 	}
 
 	public String calculateHash(String inputFilePath, String outputFilePath) throws IOException {
-		String inputFileContent = fileManager.readFile(inputFilePath);
-		String hash = DigestUtils.sha1Hex(inputFileContent);
+		// Read the data and calculate the hash value
+		String data = fileManager.readFile(inputFilePath);
+		String hash = CryptoMethod.calculateHash(data);
 
+		// Define the properties and write it to the file
 		CryptoProperties properties = new CryptoProperties();
 
 		properties.addProperty(CryptoProperties.DESCRIPTION, "File hash");

@@ -23,6 +23,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.codec.digest.DigestUtils;
 
 public class CryptoMethod {
 
@@ -105,6 +106,10 @@ public class CryptoMethod {
 		}
 
 		return crypted;
+	}
+
+	public static String calculateHash(String data) {
+		return DigestUtils.sha1Hex(data);
 	}
 
 }
