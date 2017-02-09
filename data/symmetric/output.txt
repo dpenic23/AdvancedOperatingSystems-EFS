@@ -1,0 +1,32 @@
+---BEGIN OS2 CRYPTO DATA---
+Description:
+    Crypted file
+
+Method:
+    AES
+
+File name:
+    ./data/symmetric/input.txt
+
+Data:
+    1d83Ti06Cln6GATEGule3IN+0zrh7z4V7Tq7GjyR8vnGZziVTBmukKw19zrQ
+    hSTjl2Xde3mxTwZDPZVMoxTFw3Glb86IbPdkMTb7rZk0CXHcpSKRjWtteMnD
+    aDXVEfpS35BqZC0nFClRmWLEcgw+ysLr5jOWV8b+JbElqOdqpRk4zP3RbwT/
+    8UcoodcDr7Aa9eR1oAAt4qrIyHP5M6EkRlz6FIcRNjgVWZdkocf62rznJquf
+    vOoPBCppZB6YNoLRNnvsHbXuR5HzpJOWVQWcHjdbZ50KLd6mapRKArC42cOQ
+    JFGxQ0xYUCAHEOqX4gBfsirzr3yPbpAZQ4QzDFathpre+aswmT0vcq4JM6kn
+    vxl1honUuuWhl6hQw3AnefKkEzr3lundgfuQbbpDLI1at3mfCeHFsXKLXBU2
+    P7FgaoAbkCPx4ndpKvmrpIHrGHuP3/mpkSq90/WCXlZFQJ9xlivxUe0gcmgl
+    dSYxWuGQxtVEYv+DhID5cs6TyeusaKcYjoZtHwxevhoWytF3AQJZa81oBgMR
+    gm5ZbyRPjkZx99KX6guoJ0a/pmQ2v28aISFOVkPGoL0j0P7xP4YnYTYMmsgF
+    wFwWizTXX/DsMfKlPkgWgSdOY75lfYrV74oU3IJUrlzyKZAe16ZZY4koOwSL
+    jxj3dhuvm17joDgLZINWQyadB7AaM3vW2O4mZ8kgY9V320s/MxKJ9rbYo0sQ
+    cMSqlPaiobyIKDPfc5obejnWlrxnF/UBZXukHULn/xBbtCl14k7LlUWmCPjD
+    5RoroLg8XhOIjNQvzUNUvvine+34m+SjSKPBpi3AfNlEjzNRkoldMQLOdUy3
+    DmrIpWL/2PMXwpfSfQmHk69xTOSdvIQzPEggarsJ99GoTYsvjc7DYb9u7hRL
+    7ilUIxsXOgDAjTjRuWOsVxHUdWwzL8xyIQmnBXqLko/9XZ4SYbRT+leq6Nt7
+    yaQ63IN2ZHx0LlO7fNer7VDjVacrxrGLr2zCKxUZkiMcb7AmgpMjw2aqaszF
+    TGy0cfljE8g4Fgj+lR3tnhMBdiayoT8iq8eDw+eBb5fM6YlZjpXYWDwDukRn
+    CrlxXUk0H0NyUDdNQm5I+fwEcHPKgDocgZoLRfuecdk3WsFi6xw=
+
+---END OS2 CRYPTO DATA---

@@ -1,0 +1,21 @@
+---BEGIN OS2 CRYPTO DATA---
+Description:
+    Signature
+
+File name:
+    ./data/stamp/envelope.txt
+
+Method:
+    SHA-1
+    RSA
+
+Key length:
+    a0
+    200
+
+Signature:
+    12ca7d2e493227262a91f522958de950ab5c109c490461778c3494e30c54
+    a9de095f4b0b7e6df2ae352bf973039c31a556cbd7edceecf79c5567839d
+    069c6879
+
+---END OS2 CRYPTO DATA---

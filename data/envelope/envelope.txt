@@ -1,0 +1,39 @@
+---BEGIN OS2 CRYPTO DATA---
+Description:
+    Envelope
+
+Method:
+    AES
+    RSA
+
+Key length:
+    80
+    200
+
+Envelope data:
+    LujORUs15xzeeS6i97+zEvaje6sfvf1ro5Rd3FUOWYrbi/Or9+nE5TkjbLVZ
+    bvBAdjzsHyixP+2T7RxpZYXG8iLPHsvw/260rmZyHIL5Stj013BHUzUyya6J
+    1VKvzXCv9W4FfgsrQILezu5r4niUK1uSf6ZMFiGO3Vx46raJfvvqtBjnZ1H7
+    z5I2icXkJoA38QIu1wWZR+z+JdhOApKM2fSuDOCAIL/C8MLMNmLqUtday4/8
+    VcJPTH2LQ3n0zY9KtxnvWStpTmPgcsiYptRFV4RF/NsrrzBAAQ9mGVliZzP9
+    0zL1Vmx4AUcdkeigL0W3YKI9N1PPBQJkaGARhTGoCOHRGe00Idvz/Ja/Twlo
+    CtfDobQzFOVpOw1JNtseJmVmLjk89MSJZBVVFD3kTa7kyD68YAaHBnCPOfBE
+    kNsgiSo5JwHS1A9A5f3fSWKhOn7iBmVXIEp23YnxwJjayizVpsuDh77xHfcp
+    o9PvQHK2otIlDxSGgry/5secvoEx8Py2/OYI974T2Av6Dn3zxVzs4C/grNJb
+    AxbHewzNS8BQv7PHGEy/S/h04ICYjfWhzZ9abTXX6hNP4YHo2QKPfP2IGuKJ
+    yjw/az4UdtpNfhKniopCi2kNICVOjjGiO/DspzZa9RfxtjyDrAbW7Az219Ib
+    jtvD85DofvmStOy/qvx3hSMHqdwUfiY4cw56wdvmk8Z/TtNtBCYqnWQaDYbp
+    oX4M/QkVLgy6/LdpJrZ1+1O6t3a3j712Hx4KJB/m3+oknTH5u4AhJLJjvNnK
+    dt0q/izV7YqW90b9fLbirj486zSnNC5XuCV3ilu6thO4AKIlu+PKGHIecNIj
+    iBoxhKgAbWrgoew03eG8xKXehg1z8kE1vykz82ICIz2GitM0wVeombr7KoYA
+    2WD+A61FP6sMultY/t7BJqnaGoTzCeeCWY9GImZCTmyMeckW6/F2qqEDYizD
+    Ag4hQyHkugMOTlVpa65TSo8z7O6saUh90lDZp/WNIEaUOEMP6TmOoO1PKbyK
+    49Nf8f36L1/TWxypbkbehhM0FyOoKyfwlraVfK8xgRKQq4Z3h30O5ZwSym21
+    G9lhPti0GOyVia0ulTo+UU9UU4b/erOBgrHn1vr0/HJ1YydNsYc=
+
+Envelope crypt key:
+    3e1a1490be064bcb414df2f4715b963047f433731c11c30e61d09e363408
+    6a8de223060923f955b81bfa6d49b04898c35642d1a99ab7595c971431f0
+    2952c849
+
+---END OS2 CRYPTO DATA---

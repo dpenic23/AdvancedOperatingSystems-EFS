@@ -1,0 +1,14 @@
+---BEGIN OS2 CRYPTO DATA---
+Description:
+    Signature
+
+Method:
+    SHA-1
+
+File name:
+    ./data/hash/input.txt
+
+Signature:
+    c15cfabc74da341779d687aae0c46147ca749a14
+
+---END OS2 CRYPTO DATA---

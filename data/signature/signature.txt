@@ -1,0 +1,21 @@
+---BEGIN OS2 CRYPTO DATA---
+Description:
+    Signature
+
+File name:
+    ./data/signature/input.txt
+
+Method:
+    SHA-1
+    RSA
+
+Key length:
+    a0
+    200
+
+Signature:
+    3820a9c988ef695df385ac1224a8498922ea688c0dd407f76790fd58adf3
+    900a69538fdbbf650e5b898f4a94eaface8f6c33cc8acc577efde1adfbdf
+    e34ae7b0
+
+---END OS2 CRYPTO DATA---

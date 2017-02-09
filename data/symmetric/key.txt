@@ -1,0 +1,14 @@
+---BEGIN OS2 CRYPTO DATA---
+Description:
+    Secret key
+
+Method:
+    AES
+
+Key length:
+    80
+
+Secret key:
+    ac5ec65b658a0e76e165e50a665f5dbe
+
+---END OS2 CRYPTO DATA---

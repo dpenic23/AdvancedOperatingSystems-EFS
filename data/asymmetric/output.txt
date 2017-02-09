@@ -1,0 +1,15 @@
+---BEGIN OS2 CRYPTO DATA---
+Description:
+    Crypted file
+
+Method:
+    RSA
+
+File name:
+    ./data/asymmetric/input.txt
+
+Data:
+    RkaGGzsMRaeKhEE8Q23eeMkE0/09B66cwpvx/ztQFRv0YBzA1KTfx7E4Gy58
+    NkuPgcJgYYGu5kCV/szxOspGvw==
+
+---END OS2 CRYPTO DATA---
