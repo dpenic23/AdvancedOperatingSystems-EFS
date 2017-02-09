@@ -128,6 +128,14 @@ public class CryptoMethod {
 		return Base64.getEncoder().encodeToString(bytes);
 	}
 
+	/**
+	 * Calculates the hash/digest of the specified {@link String} value. The
+	 * returned value is in its hexadecimal representation.
+	 * 
+	 * @param data
+	 *            Data which hash is to be calculated
+	 * @return Hash value of the specified data in a hexadecimal representation
+	 */
 	public static String calculateHash(String data) {
 		return DigestUtils.sha1Hex(data);
 	}

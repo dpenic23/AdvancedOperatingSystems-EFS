@@ -245,4 +245,33 @@ public class CryptoManager {
 		fileManager.writeFile(outputFilePath, new String(dataDecrypted));
 	}
 
+	public void createSignature(String inputFilePath, String keyFilePath, String signatureFilePath)
+			throws IOException, CryptoException {
+		// Read the file data and calculate its hash value
+		String data = fileManager.readFile(inputFilePath);
+		String hash = CryptoMethod.calculateHash(data);
+
+		// Read the private key
+		CryptoProperties keyProperties = fileManager.readPropertiesFromFile(keyFilePath);
+		String modulus = keyProperties.valueAssembled(CryptoProperties.MODULUS);
+		String exp = keyProperties.valueAssembled(CryptoProperties.PRIVATE_EXP);
+		PrivateKey privateKey = CryptoMethod.getPrivateKey(ASYMMETRIC_ALGORITHM, modulus, exp);
+
+		// Encrypt the hash with the private key
+		String signature = CryptoMethod.cryptHex(ASYMMETRIC_ALGORITHM, privateKey, Cipher.ENCRYPT_MODE,
+				hash.getBytes());
+
+		CryptoProperties properties = new CryptoProperties();
+
+		properties.addProperty(CryptoProperties.DESCRIPTION, "Signature");
+		properties.addProperty(CryptoProperties.FILE_NAME, inputFilePath);
+		properties.addProperty(CryptoProperties.METHOD, HASH_METHOD);
+		properties.addProperty(CryptoProperties.METHOD, ASYMMETRIC_ALGORITHM);
+		properties.addProperty(CryptoProperties.KEY_LENGTH, Integer.toHexString(hash.length() * 4));
+		properties.addProperty(CryptoProperties.KEY_LENGTH, Integer.toHexString(DEFAULT_ASYMM_KEY_SIZE));
+		properties.addProperty(CryptoProperties.SIGNATURE, signature);
+
+		fileManager.writePropertiesToFile(properties, signatureFilePath);
+	}
+
 }

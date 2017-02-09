@@ -446,11 +446,23 @@ public class MainController {
 	}
 
 	public void createSignature(ActionEvent event) {
+		String inputFilePath = textFieldSignatureInput.getText().trim();
+		String keyFilePath = textFieldSignaturePrivateKey.getText().trim();
+		String signatureFilePath = textFieldSignatureSignature.getText().trim();
 
+		try {
+			cryptoManager.createSignature(inputFilePath, keyFilePath, signatureFilePath);
+			showAlert(Alert.AlertType.INFORMATION, "Digital signature successfully created!");
+		} catch (IOException e) {
+			showAlert(Alert.AlertType.ERROR, "IO error occured!");
+		} catch (CryptoException e) {
+			showAlert(Alert.AlertType.ERROR, e.getMessage());
+		}
 	}
 
 	public void verifySignature(ActionEvent event) {
-
+		String signatureFilePath = textFieldSignatureSignature.getText().trim();
+		String keyFilePath = textFieldSignaturePublicKey.getText().trim();
 	}
 
 	public void createStamp(ActionEvent event) {
