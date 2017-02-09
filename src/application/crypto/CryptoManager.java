@@ -10,6 +10,7 @@ import java.util.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
+import javax.xml.bind.DatatypeConverter;
 
 import application.file.FileManager;
 
@@ -201,7 +202,7 @@ public class CryptoManager {
 		PublicKey publicKey = CryptoMethod.getPublicKey(ASYMMETRIC_ALGORITHM, modulus, exp);
 
 		// Encrypt the symmetric key using the asymmetric algorithm
-		String encryptedKey = CryptoMethod.cryptBase64(ASYMMETRIC_ALGORITHM, publicKey, Cipher.ENCRYPT_MODE,
+		String encryptedKey = CryptoMethod.cryptHex(ASYMMETRIC_ALGORITHM, publicKey, Cipher.ENCRYPT_MODE,
 				keyHex.getBytes());
 
 		// Write all the properties to the file
@@ -216,6 +217,32 @@ public class CryptoManager {
 		properties.addProperty(CryptoProperties.ENVELOPE_CRYPT_KEY, encryptedKey);
 
 		fileManager.writePropertiesToFile(properties, envelopeFilePath);
+	}
+
+	public void openEnvelope(String envelopeFilePath, String keyFilePath, String outputFilePath)
+			throws IOException, CryptoException {
+		// Read the encrypted data and key from the envelope
+		CryptoProperties envelopeProperties = fileManager.readPropertiesFromFile(envelopeFilePath);
+		String dataEncrypted = envelopeProperties.valueAssembled(CryptoProperties.ENVELOPE_DATA);
+		String keyEncrypted = envelopeProperties.valueAssembled(CryptoProperties.ENVELOPE_CRYPT_KEY);
+
+		// Read the private key
+		CryptoProperties keyProperties = fileManager.readPropertiesFromFile(keyFilePath);
+		String modulus = keyProperties.valueAssembled(CryptoProperties.MODULUS);
+		String exp = keyProperties.valueAssembled(CryptoProperties.PRIVATE_EXP);
+		PrivateKey privateKey = CryptoMethod.getPrivateKey(ASYMMETRIC_ALGORITHM, modulus, exp);
+
+		// Use the private key to decrypt the symmetric key
+		byte[] keyDecrypted = CryptoMethod.crypt(ASYMMETRIC_ALGORITHM, privateKey, Cipher.DECRYPT_MODE,
+				DatatypeConverter.parseHexBinary(keyEncrypted));
+		SecretKey key = CryptoMethod.getSecretKey(SYMMETRIC_ALGORITHM, new String(keyDecrypted));
+
+		// Use the symmetric key to decrypt the data
+		byte[] dataDecrypted = CryptoMethod.crypt(SYMMETRIC_ALGORITHM, key, Cipher.DECRYPT_MODE,
+				Base64.getDecoder().decode(dataEncrypted));
+
+		// Write the data to the file
+		fileManager.writeFile(outputFilePath, new String(dataDecrypted));
 	}
 
 }

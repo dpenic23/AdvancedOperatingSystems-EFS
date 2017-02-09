@@ -118,6 +118,11 @@ public class CryptoMethod {
 		return crypted;
 	}
 
+	public static String cryptHex(String algorithm, Key key, int cryptMode, byte[] input) throws CryptoException {
+		byte[] bytes = crypt(algorithm, key, cryptMode, input);
+		return Hex.encodeHexString(bytes);
+	}
+
 	public static String cryptBase64(String algorithm, Key key, int cryptMode, byte[] input) throws CryptoException {
 		byte[] bytes = crypt(algorithm, key, cryptMode, input);
 		return Base64.getEncoder().encodeToString(bytes);
