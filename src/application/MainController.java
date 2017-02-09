@@ -354,7 +354,7 @@ public class MainController {
 		} catch (IOException e) {
 			showAlert(Alert.AlertType.ERROR, "IO error occured!");
 		} catch (CryptoException e) {
-			showAlert(Alert.AlertType.ERROR, "Error occured during the file decryption!");
+			showAlert(Alert.AlertType.ERROR, e.getMessage());
 		}
 	}
 
@@ -368,16 +368,18 @@ public class MainController {
 			showAlert(Alert.AlertType.INFORMATION, "Public and private keys successfully generated!");
 		} catch (IOException e) {
 			showAlert(Alert.AlertType.ERROR, "IO error occured!");
+		} catch (CryptoException e) {
+			showAlert(Alert.AlertType.ERROR, e.getMessage());
 		}
 	}
 
 	public void encryptFileRSA(ActionEvent event) {
 		String inputFilePath = textFieldRSAInput.getText().trim();
 		String outputFilePath = textFieldRSAOutput.getText().trim();
-		String privateKeyFilePath = textFieldRSAPrivateKey.getText().trim();
+		String keyFilePath = textFieldRSAPublicKey.getText().trim();
 
 		try {
-			cryptoManager.encryptFileAsymmetric(inputFilePath, outputFilePath, privateKeyFilePath);
+			cryptoManager.encryptFileAsymmetric(inputFilePath, outputFilePath, keyFilePath);
 			showAlert(Alert.AlertType.INFORMATION, "File successfully encrypted!");
 		} catch (IOException e) {
 			showAlert(Alert.AlertType.ERROR, "IO error occured!");
@@ -389,10 +391,10 @@ public class MainController {
 	public void decryptFileRSA(ActionEvent event) {
 		String inputFilePath = textFieldRSAInput.getText().trim();
 		String outputFilePath = textFieldRSAOutput.getText().trim();
-		String publicKeyFilePath = textFieldRSAPublicKey.getText().trim();
+		String keyFilePath = textFieldRSAPrivateKey.getText().trim();
 
 		try {
-			cryptoManager.decryptFileAsymmetric(inputFilePath, outputFilePath, publicKeyFilePath);
+			cryptoManager.decryptFileAsymmetric(inputFilePath, outputFilePath, keyFilePath);
 			showAlert(Alert.AlertType.INFORMATION, "File successfully decrypted!");
 		} catch (IOException e) {
 			showAlert(Alert.AlertType.ERROR, "IO error occured!");

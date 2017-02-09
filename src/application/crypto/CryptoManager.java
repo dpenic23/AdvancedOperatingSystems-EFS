@@ -1,18 +1,11 @@
 package application.crypto;
 
 import java.io.IOException;
-import java.math.BigInteger;
-import java.security.KeyFactory;
 import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.RSAPrivateKeySpec;
-import java.security.spec.RSAPublicKeySpec;
 import java.util.Base64;
 
 import javax.crypto.Cipher;
@@ -29,16 +22,9 @@ public class CryptoManager {
 	private static final String ASYMMETRIC_ALGORITHM = "RSA";
 	private static final String HASH_METHOD = "SHA-1";
 
-	private KeyPairGenerator asymmetricKeyGenerator;
-
 	private FileManager fileManager = new FileManager();
 
 	public CryptoManager() {
-		try {
-			asymmetricKeyGenerator = KeyPairGenerator.getInstance(ASYMMETRIC_ALGORITHM);
-		} catch (NoSuchAlgorithmException e) {
-			// ignorable, algorithms are not defined by the user
-		}
 	}
 
 	public void generateSymmetricKey(String keyFilePath, int keySize) throws IOException, CryptoException {
@@ -101,87 +87,81 @@ public class CryptoManager {
 	}
 
 	public void generateAsymmetricKeys(String publicKeyFilePath, String privateKeyFilePath, int keySize)
-			throws IOException {
-		asymmetricKeyGenerator.initialize(keySize);
-
-		KeyPair keyPair = asymmetricKeyGenerator.generateKeyPair();
+			throws IOException, CryptoException {
+		// Generate the key pair, public and private keys
+		KeyPair keyPair = CryptoMethod.generateKeyPair(ASYMMETRIC_ALGORITHM, keySize);
 		RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
 		RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
 
+		// Define the public key properties
 		CryptoProperties publicKeyProperties = new CryptoProperties();
 
 		publicKeyProperties.addProperty(CryptoProperties.DESCRIPTION, "Public key");
 		publicKeyProperties.addProperty(CryptoProperties.METHOD, ASYMMETRIC_ALGORITHM);
 		publicKeyProperties.addProperty(CryptoProperties.KEY_LENGTH,
-				Integer.toHexString(publicKey.getModulus().toString(16).length()));
+				Integer.toHexString(publicKey.getModulus().bitLength()));
 		publicKeyProperties.addProperty(CryptoProperties.MODULUS, publicKey.getModulus().toString(16));
 		publicKeyProperties.addProperty(CryptoProperties.PUBLIC_EXP, publicKey.getPublicExponent().toString(16));
 
+		// Define the private key properties
 		CryptoProperties privateKeyProperties = new CryptoProperties();
 
 		privateKeyProperties.addProperty(CryptoProperties.DESCRIPTION, "Private key");
 		privateKeyProperties.addProperty(CryptoProperties.METHOD, ASYMMETRIC_ALGORITHM);
 		privateKeyProperties.addProperty(CryptoProperties.KEY_LENGTH,
-				Integer.toHexString(privateKey.getModulus().toString(16).length()));
+				Integer.toHexString(privateKey.getModulus().bitLength()));
 		privateKeyProperties.addProperty(CryptoProperties.MODULUS, privateKey.getModulus().toString(16));
 		privateKeyProperties.addProperty(CryptoProperties.PRIVATE_EXP, privateKey.getPrivateExponent().toString(16));
 
+		// Write the defined properties to the file
 		fileManager.writePropertiesToFile(publicKeyProperties, publicKeyFilePath);
 		fileManager.writePropertiesToFile(privateKeyProperties, privateKeyFilePath);
 
 	}
 
-	public void encryptFileAsymmetric(String inputFilePath, String outputFilePath, String privateKeyFilePath)
+	public void encryptFileAsymmetric(String inputFilePath, String outputFilePath, String keyFilePath)
 			throws IOException, CryptoException {
-		String inputFileContent = fileManager.readFile(inputFilePath);
+		// Read all the data to be encrypted
+		String data = fileManager.readFile(inputFilePath);
 
-		CryptoProperties keyProperties = fileManager.readPropertiesFromFile(privateKeyFilePath);
-		String keyModulus = keyProperties.valueAssembled(CryptoProperties.MODULUS);
-		String keyExp = keyProperties.valueAssembled(CryptoProperties.PRIVATE_EXP);
-		RSAPrivateKeySpec privateKey = new RSAPrivateKeySpec(new BigInteger(keyModulus, 16),
-				new BigInteger(keyExp, 16));
+		// Read the public key from the file
+		CryptoProperties keyProperties = fileManager.readPropertiesFromFile(keyFilePath);
+		String modulus = keyProperties.valueAssembled(CryptoProperties.MODULUS);
+		String exp = keyProperties.valueAssembled(CryptoProperties.PUBLIC_EXP);
+		PublicKey key = CryptoMethod.getPublicKey(ASYMMETRIC_ALGORITHM, modulus, exp);
 
-		PrivateKey key = null;
-		try {
-			key = KeyFactory.getInstance(ASYMMETRIC_ALGORITHM).generatePrivate(privateKey);
-		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-			throw new CryptoException();
-		}
+		// Encrypt the data
+		byte[] encrypted = CryptoMethod.crypt(ASYMMETRIC_ALGORITHM, key, Cipher.ENCRYPT_MODE, data.getBytes());
+		String encryptedData = Base64.getEncoder().encodeToString(encrypted);
 
-		byte[] encrypted = CryptoMethod.crypt(ASYMMETRIC_ALGORITHM, key, Cipher.ENCRYPT_MODE,
-				inputFileContent.getBytes());
-		String encryptedText = Base64.getEncoder().encodeToString(encrypted);
-
+		// Define the file properties and write it to the specified file
 		CryptoProperties properties = new CryptoProperties();
 
 		properties.addProperty(CryptoProperties.DESCRIPTION, "Crypted file");
 		properties.addProperty(CryptoProperties.METHOD, ASYMMETRIC_ALGORITHM);
 		properties.addProperty(CryptoProperties.FILE_NAME, inputFilePath);
-		properties.addProperty(CryptoProperties.DATA, encryptedText);
+		properties.addProperty(CryptoProperties.DATA, encryptedData);
 
 		fileManager.writePropertiesToFile(properties, outputFilePath);
 	}
 
-	public void decryptFileAsymmetric(String inputFilePath, String outputFilePath, String publicKeyFilePath)
+	public void decryptFileAsymmetric(String inputFilePath, String outputFilePath, String keyFilePath)
 			throws IOException, CryptoException {
+		// Read the encrypted data
 		CryptoProperties fileProperties = fileManager.readPropertiesFromFile(inputFilePath);
 		String data = fileProperties.valueAssembled(CryptoProperties.DATA);
 
-		CryptoProperties keyProperties = fileManager.readPropertiesFromFile(publicKeyFilePath);
-		String keyModulus = keyProperties.valueAssembled(CryptoProperties.MODULUS);
-		String keyExp = keyProperties.valueAssembled(CryptoProperties.PUBLIC_EXP);
-		RSAPublicKeySpec publicKey = new RSAPublicKeySpec(new BigInteger(keyModulus, 16), new BigInteger(keyExp, 16));
+		// Read the private key from the file
+		CryptoProperties keyProperties = fileManager.readPropertiesFromFile(keyFilePath);
+		String modulus = keyProperties.valueAssembled(CryptoProperties.MODULUS);
+		String exp = keyProperties.valueAssembled(CryptoProperties.PRIVATE_EXP);
+		PrivateKey key = CryptoMethod.getPrivateKey(ASYMMETRIC_ALGORITHM, modulus, exp);
 
-		PublicKey key = null;
-		try {
-			key = KeyFactory.getInstance(ASYMMETRIC_ALGORITHM).generatePublic(publicKey);
-		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-			throw new CryptoException();
-		}
-
+		// Decrypt the data
 		byte[] encrypted = Base64.getDecoder().decode(data);
 		byte[] decrypted = CryptoMethod.crypt(ASYMMETRIC_ALGORITHM, key, Cipher.DECRYPT_MODE, encrypted);
 
+		// Write the data to the file
 		fileManager.writeFile(outputFilePath, new String(decrypted));
 	}
 

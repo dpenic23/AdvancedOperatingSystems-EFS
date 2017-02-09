@@ -1,8 +1,17 @@
 package application.crypto;
 
+import java.math.BigInteger;
 import java.security.InvalidKeyException;
 import java.security.Key;
+import java.security.KeyFactory;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.RSAPrivateKeySpec;
+import java.security.spec.RSAPublicKeySpec;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -40,6 +49,47 @@ public class CryptoMethod {
 		}
 
 		return new SecretKeySpec(keyDecoded, 0, keyDecoded.length, algorithm);
+	}
+
+	public static KeyPair generateKeyPair(String algorithm, int keySize) throws CryptoException {
+		KeyPairGenerator keyGenerator = null;
+
+		try {
+			keyGenerator = KeyPairGenerator.getInstance(algorithm);
+			keyGenerator.initialize(keySize);
+		} catch (NoSuchAlgorithmException e) {
+			throw new CryptoException("Error during the key pair generation, no such algorithm: " + algorithm);
+		}
+
+		return keyGenerator.generateKeyPair();
+	}
+
+	public static PublicKey getPublicKey(String algorithm, String modulus, String exp) throws CryptoException {
+		RSAPublicKeySpec keySpec = new RSAPublicKeySpec(new BigInteger(modulus, 16), new BigInteger(exp, 16));
+
+		PublicKey key = null;
+
+		try {
+			key = KeyFactory.getInstance(algorithm).generatePublic(keySpec);
+		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+			throw new CryptoException(e.getMessage());
+		}
+
+		return key;
+	}
+
+	public static PrivateKey getPrivateKey(String algorithm, String modulus, String exp) throws CryptoException {
+		RSAPrivateKeySpec keySpec = new RSAPrivateKeySpec(new BigInteger(modulus, 16), new BigInteger(exp, 16));
+
+		PrivateKey key = null;
+
+		try {
+			key = KeyFactory.getInstance(algorithm).generatePrivate(keySpec);
+		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+			throw new CryptoException(e.getMessage());
+		}
+
+		return key;
 	}
 
 	public static byte[] crypt(String algorithm, Key key, int cryptMode, byte[] input) throws CryptoException {
