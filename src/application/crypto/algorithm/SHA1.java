@@ -1,6 +1,9 @@
 package application.crypto.algorithm;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.math.BigInteger;
+import java.nio.ByteBuffer;
 
 public class SHA1 implements MessageDigestAlgorithm {
 
@@ -35,7 +38,7 @@ public class SHA1 implements MessageDigestAlgorithm {
 		return sb.toString();
 	}
 
-	private static long f(long t, long B, long C, long D) {
+	private static int f(int t, int B, int C, int D) {
 		if (t >= 0 && t <= 19) {
 			return ((B & C) | ((~B) & D));
 		} else if (t >= 20 && t <= 39) {
@@ -47,7 +50,7 @@ public class SHA1 implements MessageDigestAlgorithm {
 		}
 	}
 
-	private static long K(long t) {
+	private static int K(int t) {
 		if (t >= 0 && t <= 19) {
 			return 0x5A827999;
 		} else if (t >= 20 && t <= 39) {
@@ -59,6 +62,10 @@ public class SHA1 implements MessageDigestAlgorithm {
 		}
 	}
 
+	private static int ROTL(int t, int d) {
+		return t << d;
+	}
+
 	@Override
 	public byte[] calculateMessageDigest(byte[] data) {
 		// Fill the array until it can be divided on blocks of size BLOCK_SIZE
@@ -66,26 +73,73 @@ public class SHA1 implements MessageDigestAlgorithm {
 
 		int numOfBlocks = bits.length() / BLOCK_SIZE;
 
-		for (int i = 0; i < numOfBlocks; i++) {
+		int H0 = 0x67452301;
+		int H1 = 0xEFCDAB89;
+		int H2 = 0x98BADCFE;
+		int H3 = 0x10325476;
+		int H4 = 0xC3D2E1F0;
 
+		for (int i = 0; i < numOfBlocks; i++) {
+			int[] W = new int[80];
+
+			for (int j = 0; j < 16; j++) {
+				String word = bits.substring(j * 32, (j + 1) * 32);
+				W[j] = Integer.parseUnsignedInt(word, 2);
+			}
+
+			for (int t = 16; t < W.length; t++) {
+				W[t] = ROTL(W[t - 3] ^ W[t - 8] ^ W[t - 14] ^ W[t - 16], 1);
+			}
+
+			int A = H0;
+			int B = H1;
+			int C = H2;
+			int D = H3;
+			int E = H4;
+
+			for (int t = 0; t < W.length; t++) {
+				int tmp = ROTL(A, 5) + f(t, B, C, D) + E + W[t] + K(t);
+				E = D;
+				D = C;
+				C = ROTL(B, 30);
+				B = A;
+				A = tmp;
+			}
+
+			H0 = H0 + A;
+			H1 = H1 + B;
+			H2 = H2 + C;
+			H3 = H3 + D;
+			H4 = H4 + E;
 		}
 
-		long H0 = 0x67452301;
-		long H1 = 0xEFCDAB89;
-		long H2 = 0x98BADCFE;
-		long H3 = 0x10325476;
-		long H4 = 0xC3D2E1F0;
+		byte[] H0bytes = ByteBuffer.allocate(4).putInt(H0).array();
+		byte[] H1bytes = ByteBuffer.allocate(4).putInt(H1).array();
+		byte[] H2bytes = ByteBuffer.allocate(4).putInt(H2).array();
+		byte[] H3bytes = ByteBuffer.allocate(4).putInt(H3).array();
+		byte[] H4bytes = ByteBuffer.allocate(4).putInt(H4).array();
 
-		return null;
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+		try {
+			outputStream.write(H0bytes);
+			outputStream.write(H1bytes);
+			outputStream.write(H2bytes);
+			outputStream.write(H3bytes);
+			outputStream.write(H4bytes);
+		} catch (IOException e) {
+		}
+
+		return outputStream.toByteArray();
 	}
 
 	public static void main(String[] args) {
-		String a = "josko";
-
-		String b = init(a.getBytes());
-
-		System.out.println(new BigInteger(a.getBytes()).toString(2));
-		System.out.print(b);
+		int H0 = 0x07452301;
+		byte[] bytes = ByteBuffer.allocate(4).putInt(H0).array();
+		System.out.println(bytes.length);
+		for (int i = 0; i < bytes.length; i++) {
+			System.out.print(bytes[i]);
+		}
 	}
 
 }
