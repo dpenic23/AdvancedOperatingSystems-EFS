@@ -1,9 +1,38 @@
 package application.crypto.algorithm;
 
+import java.math.BigInteger;
+
 public class SHA1 implements MessageDigestAlgorithm {
 
-	private static void init(byte[] data) {
-		int numOfBits = data.length * 8;
+	private static final int BLOCK_SIZE = 20;
+
+	private static String init(byte[] data) {
+		// Convert to its binary representation
+		String bits = new BigInteger(data).toString(2);
+
+		// Size of the data, number of bits in base 2
+		String size2 = Integer.toBinaryString(bits.length());
+
+		int lastBlockSize = bits.length() % BLOCK_SIZE;
+		int newBlockSize = lastBlockSize + 1 + size2.length();
+		int numOfZeros = 0;
+
+		if (newBlockSize <= BLOCK_SIZE) {
+			numOfZeros = BLOCK_SIZE - newBlockSize;
+		} else {
+			numOfZeros = (BLOCK_SIZE - 1 - lastBlockSize) + (BLOCK_SIZE - size2.length());
+		}
+
+		StringBuilder sb = new StringBuilder(bits);
+		sb.append("1");
+
+		for (int i = 0; i < numOfZeros; i++) {
+			sb.append("0");
+		}
+
+		sb.append(size2);
+
+		return sb.toString();
 	}
 
 	private static long f(long t, long B, long C, long D) {
@@ -32,14 +61,14 @@ public class SHA1 implements MessageDigestAlgorithm {
 
 	@Override
 	public byte[] calculateMessageDigest(byte[] data) {
-		// Copy the data so it's not changed
-		byte[] dataCopy = new byte[data.length];
-		System.arraycopy(data, 0, dataCopy, 0, data.length);
+		// Fill the array until it can be divided on blocks of size BLOCK_SIZE
+		String bits = init(data);
 
-		// Fill the array until it can be divided on blocks of size 512
-		init(dataCopy);
+		int numOfBlocks = bits.length() / BLOCK_SIZE;
 
-		int numOfBlocks = dataCopy.length * 8 / 512;
+		for (int i = 0; i < numOfBlocks; i++) {
+
+		}
 
 		long H0 = 0x67452301;
 		long H1 = 0xEFCDAB89;
@@ -48,6 +77,15 @@ public class SHA1 implements MessageDigestAlgorithm {
 		long H4 = 0xC3D2E1F0;
 
 		return null;
+	}
+
+	public static void main(String[] args) {
+		String a = "josko";
+
+		String b = init(a.getBytes());
+
+		System.out.println(new BigInteger(a.getBytes()).toString(2));
+		System.out.print(b);
 	}
 
 }
