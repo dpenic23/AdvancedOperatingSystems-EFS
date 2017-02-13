@@ -7,11 +7,17 @@ import java.nio.ByteBuffer;
 
 public class SHA1 implements MessageDigestAlgorithm {
 
-	private static final int BLOCK_SIZE = 20;
+	private static final int BLOCK_SIZE = 512;
 
 	private static String init(byte[] data) {
+
 		// Convert to its binary representation
 		String bits = new BigInteger(data).toString(2);
+
+		// Add missing leading zeros
+		while (bits.length() % 8 != 0) {
+			bits = "0" + bits;
+		}
 
 		// Size of the data, number of bits in base 2
 		String size2 = Integer.toBinaryString(bits.length());
@@ -62,8 +68,9 @@ public class SHA1 implements MessageDigestAlgorithm {
 		}
 	}
 
-	private static int ROTL(int t, int d) {
-		return t << d;
+	private static int ROTL(int number, int distance) {
+		int q = (number << distance) | (number >>> (32 - distance));
+		return q;
 	}
 
 	@Override
@@ -81,9 +88,10 @@ public class SHA1 implements MessageDigestAlgorithm {
 
 		for (int i = 0; i < numOfBlocks; i++) {
 			int[] W = new int[80];
+			int offset = i * BLOCK_SIZE;
 
 			for (int j = 0; j < 16; j++) {
-				String word = bits.substring(j * 32, (j + 1) * 32);
+				String word = bits.substring(offset + j * 32, offset + (j + 1) * 32);
 				W[j] = Integer.parseUnsignedInt(word, 2);
 			}
 
@@ -131,15 +139,6 @@ public class SHA1 implements MessageDigestAlgorithm {
 		}
 
 		return outputStream.toByteArray();
-	}
-
-	public static void main(String[] args) {
-		int H0 = 0x07452301;
-		byte[] bytes = ByteBuffer.allocate(4).putInt(H0).array();
-		System.out.println(bytes.length);
-		for (int i = 0; i < bytes.length; i++) {
-			System.out.print(bytes[i]);
-		}
 	}
 
 }
